@@ -1,0 +1,16 @@
+.notice {
+  background-color: #eef4ff;
+  border: 1px solid #0176d3;
+  border-radius: 4px;
+  padding: 12px 16px;
+}
+
+.notice-title {
+  margin: 0 0 4px 0;
+}
+
+.notice-message {
+  margin: 0;
+  padding-left: 1.5em;
+  font-size: 14px;
+}

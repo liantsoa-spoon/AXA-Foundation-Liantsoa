@@ -1,0 +1,59 @@
+.decision {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.25rem;
+  border: 1px solid;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.decision svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.approve {
+  border-color: #2e844a;
+}
+
+.approve svg {
+  fill: #2e844a;
+}
+
+.reject {
+  border-color: #ea001e;
+}
+
+.reject svg {
+  fill: #ea001e;
+}
+
+.approve:hover,
+.chosen.approve {
+  border-color: #2e844a;
+  background-color: #2e844a;
+}
+
+.reject:hover,
+.chosen.reject {
+  border-color: #ea001e;
+  background-color: #ea001e;
+}
+
+.decision:hover svg,
+.chosen svg {
+  fill: #fff;
+}
+
+.muted {
+  border-color: #c9c9c9;
+  background-color: #f3f3f3;
+}
+
+.muted svg {
+  fill: #c9c9c9;
+}

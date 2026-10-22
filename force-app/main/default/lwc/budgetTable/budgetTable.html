@@ -1,0 +1,190 @@
+<!--
+  @description       : Renders a Budget or Benefit table in an SLDS accordion, with its totals and percentages.
+  @author            : Liantsoa Andrianilana
+  @last modified on  : 19-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   16-10-2026   LAN      Initial version
+  1.1   19-10-2026   LAN      Remove the totals row
+  1.2   19-10-2026   LAN      Show the loading, error and empty states of the Budget record page
+-->
+<template>
+  <!-- Budget record page: the table loads itself. -->
+  <div lwc:if={isLoading} class="slds-is-relative slds-p-around_large">
+    <lightning-spinner alternative-text={labels.loading} size="small"></lightning-spinner>
+  </div>
+  <div lwc:if={errorMessage} class="slds-text-color_error slds-p-around_small" role="alert">{errorMessage}</div>
+  <p lwc:if={isEmptyStateVisible} class="slds-text-color_weak slds-p-around_small">{labels.emptyState}</p>
+
+  <!-- SLDS accordion blueprint: the title takes the style of the form labels, the table opens by default. -->
+  <ul lwc:if={isTableVisible} class="slds-accordion">
+    <li class="slds-accordion__list-item">
+      <section class={sectionClass}>
+        <div class="slds-accordion__summary">
+          <h3 class="slds-accordion__summary-heading">
+            <button
+              class="slds-button slds-button_reset slds-accordion__summary-action"
+              aria-expanded={ariaExpanded}
+              onclick={handleToggle}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                size="x-small"
+                class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-form-element__label slds-truncate" title={config.title}>
+                <abbr lwc:if={config.isMandatory} class="slds-required" title={labels.required}>*</abbr>
+                {config.title}
+              </span>
+            </button>
+            <lightning-helptext
+              lwc:if={config.helpText}
+              class="slds-m-left_xx-small"
+              content={config.helpText}
+            ></lightning-helptext>
+          </h3>
+        </div>
+
+        <div class="slds-accordion__content">
+          <!-- No overflow wrapper: it would clip the dropdown of the comboboxes. -->
+          <table
+            class="slds-table slds-table_fixed-layout slds-no-row-hover slds-border_top slds-border_bottom slds-border_left slds-border_right"
+          >
+            <thead>
+              <tr class="slds-line-height_reset">
+                <template for:each={headers} for:item="header">
+                  <th key={header.key} scope="col" class={header.cssClass}>
+                    <div class="slds-cell-wrap" title={header.label}>
+                      <abbr lwc:if={header.isRequired} class="slds-required" title={labels.required}>*</abbr>
+                      {header.label}
+                    </div>
+                  </th>
+                </template>
+                <th lwc:if={hasTotal} scope="col" class={trailingHeaderClass}>
+                  <div class="slds-truncate" title={totalHeader}>{totalHeader}</div>
+                </th>
+                <th lwc:if={hasPercent} scope="col" class={trailingHeaderClass}>
+                  <div class="slds-truncate" title={labels.percent}>{labels.percent}</div>
+                </th>
+                <th lwc:if={isEditable} scope="col" class={actionHeaderClass}>
+                  <span class="slds-assistive-text">{labels.deleteRow}</span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <template for:each={rowViews} for:item="row">
+                <tr key={row.key}>
+                  <template for:each={row.cells} for:item="cell">
+                    <td key={cell.key} class={cell.cssClass}>
+                      <template lwc:if={cell.isPicklist}>
+                        <lightning-combobox
+                          variant="label-hidden"
+                          label={cell.label}
+                          options={cell.options}
+                          value={cell.value}
+                          placeholder={labels.selectPlaceholder}
+                          dropdown-alignment="auto"
+                          data-row-key={row.key}
+                          data-column-key={cell.key}
+                          onchange={handleCellChange}
+                          disabled={readOnly}
+                        ></lightning-combobox>
+                      </template>
+                      <template lwc:elseif={cell.isCurrency}>
+                        <lightning-input
+                          type="number"
+                          formatter="currency"
+                          step="0.01"
+                          min="0"
+                          variant="label-hidden"
+                          label={cell.label}
+                          value={cell.value}
+                          data-row-key={row.key}
+                          data-column-key={cell.key}
+                          onchange={handleCellChange}
+                          disabled={readOnly}
+                        ></lightning-input>
+                      </template>
+                      <template lwc:elseif={cell.isDate}>
+                        <lightning-input
+                          type="date"
+                          date-style="short"
+                          variant="label-hidden"
+                          label={cell.label}
+                          value={cell.value}
+                          data-row-key={row.key}
+                          data-column-key={cell.key}
+                          onchange={handleCellChange}
+                          disabled={readOnly}
+                        ></lightning-input>
+                      </template>
+                      <template lwc:elseif={cell.isTextArea}>
+                        <lightning-textarea
+                          variant="label-hidden"
+                          label={cell.label}
+                          value={cell.value}
+                          max-length="1000"
+                          data-row-key={row.key}
+                          data-column-key={cell.key}
+                          onchange={handleCellChange}
+                          disabled={readOnly}
+                        ></lightning-textarea>
+                      </template>
+                      <template lwc:else>
+                        <lightning-input
+                          type="text"
+                          variant="label-hidden"
+                          label={cell.label}
+                          value={cell.value}
+                          max-length="80"
+                          data-row-key={row.key}
+                          data-column-key={cell.key}
+                          onchange={handleCellChange}
+                          disabled={readOnly}
+                        ></lightning-input>
+                      </template>
+                    </td>
+                  </template>
+                  <td lwc:if={hasTotal} class={trailingCellClass}>
+                    <lightning-formatted-number
+                      value={row.total}
+                      format-style="currency"
+                      currency-code={currencyCode}
+                    ></lightning-formatted-number>
+                  </td>
+                  <td lwc:if={hasPercent} class={trailingCellClass}>
+                    <template lwc:if={row.hasPercentValue}>
+                      <lightning-formatted-number
+                        value={row.percent}
+                        format-style="percent"
+                        maximum-fraction-digits="1"
+                      ></lightning-formatted-number>
+                    </template>
+                    <template lwc:else>{labels.noValue}</template>
+                  </td>
+                  <td lwc:if={isEditable} class={actionCellClass}>
+                    <lightning-button-icon
+                      icon-name="utility:delete"
+                      variant="bare"
+                      alternative-text={labels.deleteRow}
+                      title={labels.deleteRow}
+                      data-row-key={row.key}
+                      onclick={handleDeleteRow}
+                    ></lightning-button-icon>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+
+          <div lwc:if={isEditable} class="slds-text-align_right slds-p-top_small">
+            <lightning-button label={labels.addRow} icon-name="utility:add" onclick={handleAddRow}></lightning-button>
+          </div>
+        </div>
+      </section>
+    </li>
+  </ul>
+</template>

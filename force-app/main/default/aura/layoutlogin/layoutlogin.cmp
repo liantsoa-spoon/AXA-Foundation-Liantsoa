@@ -1,0 +1,18 @@
+<aura:component implements="forceCommunity:layout" description="AXA user interface login layout" access="global">
+    <aura:attribute name="content" type="Aura.Component[]" required="false" description="Page content (e.g. standard login form) passed to loginForm slot"/>
+
+    <!-- <ltng:require styles="{!$Resource.chamcss}"></ltng:require> -->
+
+    <div class="layout-login page-wrapper">
+        <c:loginFormHeader />
+
+        <div class="main-content">
+            <div class="login-form-column">
+                <c:loginFormContainerAura content="{!v.content}" />
+            </div>
+            <div class="brand-info-column">
+                <c:loginFormBrandInfo />
+            </div>
+        </div>
+    </div>
+</aura:component>

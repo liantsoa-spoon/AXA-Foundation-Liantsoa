@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Local</fullName>
+    <active>false</active>
+    <description>Question created specifically for a funding opportunity; not reusable in the shared catalog.</description>
+    <label>Local</label>
+    <picklistValues>
+        <picklist>QuestionCategory</picklist>
+        <values>
+            <fullName>Custom%20AXA</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

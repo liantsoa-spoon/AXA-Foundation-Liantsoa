@@ -1,0 +1,115 @@
+<!--
+  @description       :
+  @author            : Kevin RAMAROZATOVO
+  @group             :
+  @last modified on  : 21-09-2026
+  @last modified by  : Kevin RAMAROZATOVO
+-->
+<template>
+  <div class="slds-var-p-around_small">
+    <lightning-card title={labels.title}>
+      <div
+        class="slds-var-p-top_large"
+        ondecisionselect={handleEoiDecisionSelect}
+      >
+        <template lwc:if={isLoaded}>
+          <div
+            class="slds-grid slds-grid_vertical-align-center slds-var-p-bottom_small"
+          >
+            <lightning-radio-group
+              name="eoiFilter"
+              label={labels.filterLabel}
+              variant="label-hidden"
+              type="button"
+              options={filters}
+              value={currentFilter}
+              onchange={handleFilterChange}
+            ></lightning-radio-group>
+
+            <template lwc:if={selectedRowCount}>
+              <div
+                class="slds-col_bump-left slds-grid slds-grid_vertical-align-center"
+              >
+                <span class="slds-text-title_bold">{selectionSummary}</span>
+                <template for:each={eoiOptions} for:item="option">
+                  <button
+                    key={option.value}
+                    type="button"
+                    class={option.bulkClass}
+                    data-value={option.value}
+                    onclick={handleBulkDecision}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d={option.iconPath}></path>
+                    </svg>
+                    {option.bulkLabel}
+                  </button>
+                </template>
+              </div>
+            </template>
+          </div>
+
+          <template lwc:if={visibleApplicationForms.length}>
+            <c-application-form-eoi-review-table
+              key-field="id"
+              data={pagedApplicationForms}
+              columns={columns}
+              sorted-by={sortedBy}
+              sorted-direction={sortDirection}
+              onsort={handleSort}
+              selected-rows={selectedRowIds}
+              onrowselection={handleRowSelection}
+            ></c-application-form-eoi-review-table>
+
+            <div
+              class="slds-grid slds-grid_vertical-align-center slds-var-p-around_small slds-border_top slds-var-m-top_medium"
+            >
+              <span class="slds-text-body_small slds-text-color_weak"
+                >{pageSummary}</span
+              >
+              <div
+                class="slds-col_bump-left slds-grid slds-grid_vertical-align-center"
+              >
+                <lightning-button-icon
+                  icon-name="utility:chevronleft"
+                  variant="border-filled"
+                  title={labels.pagination.previous}
+                  alternative-text={labels.pagination.previous}
+                  disabled={isFirstPage}
+                  onclick={handlePreviousPage}
+                ></lightning-button-icon>
+                <span
+                  class="slds-text-body_small slds-var-m-horizontal_small"
+                  >{pagePosition}</span
+                >
+                <lightning-button-icon
+                  icon-name="utility:chevronright"
+                  variant="border-filled"
+                  title={labels.pagination.next}
+                  alternative-text={labels.pagination.next}
+                  disabled={isLastPage}
+                  onclick={handleNextPage}
+                ></lightning-button-icon>
+              </div>
+            </div>
+          </template>
+          <template lwc:else>
+            <p
+              class="slds-text-align_center slds-text-color_weak slds-var-p-around_xx-large"
+            >
+              {labels.feedback.emptyState}
+            </p>
+          </template>
+        </template>
+
+        <template lwc:else>
+          <div class="slds-is-relative slds-var-p-around_xx-large">
+            <lightning-spinner
+              alternative-text={labels.feedback.loading}
+            ></lightning-spinner>
+          </div>
+        </template>
+      </div>
+    </lightning-card>
+  </div>
+</template>

@@ -1,0 +1,23 @@
+.Red {
+  --slds-c-icon-color-foreground: #ea001e;
+  --slds-c-button-text-color: #ea001e;
+  --slds-c-button-text-color-hover: #ea001e;
+  --slds-c-button-text-color-active: #ea001e;
+  color: #ea001e;
+}
+
+.Orange {
+  --slds-c-icon-color-foreground: #fe9339;
+  --slds-c-button-text-color: #fe9339;
+  --slds-c-button-text-color-hover: #fe9339;
+  --slds-c-button-text-color-active: #fe9339;
+  color: #fe9339;
+}
+
+.Green {
+  --slds-c-icon-color-foreground: #2e844a;
+  --slds-c-button-text-color: #2e844a;
+  --slds-c-button-text-color-hover: #2e844a;
+  --slds-c-button-text-color-active: #2e844a;
+  color: #2e844a;
+}

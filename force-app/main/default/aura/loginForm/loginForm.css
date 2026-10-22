@@ -1,0 +1,215 @@
+/* Login form - AXA Foundation brand restyle (UX designer variant A)
+   Tokens: action #00008c | strong #0c0e45 | text #1b263c | input border #5c6378 | error #b3122e
+   Markup: label text sits as plain text above each ui:input; the (hidden) #sfdc_user / #sfdc_lock
+   spans are reused to render the red required asterisk right after the label text. */
+
+.THIS {
+    display: block;
+    text-align: left;
+}
+
+/* Field blocks: label (text node) above, input below */
+.THIS #sfdc_username_container,
+.THIS #sfdc_password_container {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #0c0e45;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Required asterisk, right after the label text */
+.THIS #sfdc_user,
+.THIS #sfdc_lock {
+    float: none;
+    display: inline;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    color: #b3122e;
+}
+
+.THIS #sfdc_user::before,
+.THIS #sfdc_lock::before {
+    content: none;
+}
+
+.THIS #sfdc_user::after,
+.THIS #sfdc_lock::after {
+    content: ' *';
+    font-family: inherit;
+    color: #b3122e;
+}
+
+/* Standard assistive label stays hidden (the visible label is the text above) */
+.THIS .uiInput {
+    display: block;
+    margin-top: 8px;
+}
+
+.THIS input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    padding: 0 16px;
+    background: #ffffff;
+    border: 1px solid #5c6378;
+    border-radius: 8px;
+    -webkit-appearance: none;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1b263c;
+    box-shadow: none;
+    transition: border-color 150ms;
+}
+
+.THIS input:focus,
+.THIS input:focus-visible {
+    border-color: #00008c;
+    outline: 2px solid #00008c;
+    outline-offset: 2px;
+}
+
+/* Remember me: checkbox first, label after it */
+.THIS #sfdc_remember {
+    margin: 0 0 8px;
+}
+
+.THIS #sfdc_remember .uiInputCheckbox {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    margin: 0;
+}
+
+.THIS #sfdc_remember input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+    appearance: auto;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    accent-color: #00008c;
+    cursor: pointer;
+}
+
+.THIS #sfdc_remember label {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1b263c;
+    cursor: pointer;
+}
+
+.THIS #error {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    text-align: start;
+    font-weight: 600;
+    color: #7d0c20;
+    background: #fbeaec;
+    border-radius: 8px;
+}
+
+/* Row: Sign in button + Forgot your password? on the same line */
+.THIS .sfdc:has(> button.sfdc_button) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+    margin-top: 28px;
+}
+
+.THIS button.sfdc_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 40px;
+    color: #ffffff;
+    background-color: #0c0e45;
+    background-image: none;
+    border: 1px solid #0c0e45;
+    border-radius: 9999px;
+    white-space: nowrap;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    transition: background-color 150ms, border-color 150ms;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.THIS button.sfdc_button:hover {
+    background-color: #00008c;
+    border-color: #00008c;
+    cursor: pointer;
+}
+
+.THIS button.sfdc_button:focus-visible {
+    outline: 2px solid #00008c;
+    outline-offset: 2px;
+}
+
+.THIS button .label {
+    color: #ffffff;
+}
+
+/* "Not a member?" moves to the header component: hidden here for now (remove this rule to show it again) */
+.THIS #sfdc_forgot {
+    display: none;
+}
+
+.THIS a {
+    color: #00008c;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 150ms;
+}
+
+.THIS a:hover {
+    color: #0c0e45;
+    text-decoration: underline;
+}
+
+.THIS label.uiLabel-hidden {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .THIS .sfdc:has(> button.sfdc_button) {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+}

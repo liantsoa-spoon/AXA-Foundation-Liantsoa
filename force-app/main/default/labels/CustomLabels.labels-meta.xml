@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Activity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activites</shortDescription>
+        <value>Activities</value>
+    </labels>
+    <labels>
+        <fullName>Affiliated_Members</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Affiliated Members</shortDescription>
+        <value>Affiliated Members</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormAlreadySubmittedLinkText</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationForm</shortDescription>
+        <value>here</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormAlreadySubmittedMessage</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationForm</shortDescription>
+        <value>Hello, it appears your organization has already submitted this form related to {ProgramName}. Please note that only a single submission is allowed per contact/institution.
+
+You can access your submission&apos;s information {ApplicationFormLink}. If you wish to get in touch with AXA Foundation regarding your application, please use the chatter.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormBudgetLoadError</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormBudgetLoadError</shortDescription>
+        <value>The budget could not be loaded. Please reload the page or contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormBudgetRequestedAmount</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormBudgetRequestedAmount</shortDescription>
+        <value>Budget requested from the AXA Foundation to support this project (in euros)</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormEditRestrictedMessage</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message shown to a Contact who cannot fill the form</shortDescription>
+        <value>Only the project applicant lead can fill in this application form. You can view the project in read-only mode.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorDuplicateContact</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormErrorDuplicateContact</shortDescription>
+        <value>A contact with this email address already exists. Please check the email address entered, or contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorDuplicateRecord</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormErrorDuplicateRecord</shortDescription>
+        <value>This information already exists in another record. Please check your answers, or contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorOrganizationNotLinked</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormErrorOrganizationNotLinked</shortDescription>
+        <value>Your contact is not linked to an organization. Please contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorTechnicalError</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormErrorTechnicalError</shortDescription>
+        <value>A technical error occurred. Please try again or contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorUserNotLinked</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormErrorUserNotLinked</shortDescription>
+        <value>Your user account is not linked to a contact. Please contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormPdfTemplateName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Application Form PDF Template Name</shortDescription>
+        <value>Full application form</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormSubmissionReceivedMessage</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ApplicationFormSubmissionReceivedMessage</shortDescription>
+        <value>Hello, your {FormType} form for the program {ProgramName} has been received.
+
+You can access your submission&apos;s information {ApplicationFormLink}. If you wish to get in touch with AXA Foundation regarding your application, please use the chatter.</value>
+    </labels>
+    <labels>
+        <fullName>BudgetCounterpartBenefitTypeName</fullName>
+        <categories>Budget</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Name of the Benefit Type of the counterparts</shortDescription>
+        <value>AXA Foundation Counterpart</value>
+    </labels>
+    <labels>
+        <fullName>BudgetRequestedAmountQuestionName</fullName>
+        <categories>Budget</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Name of the table question whose total is the amount requested</shortDescription>
+        <value>Budget requested from the AXA Foundation (in euros)</value>
+    </labels>
+    <labels>
+        <fullName>BudgetTotalProjectBudgetQuestionName</fullName>
+        <categories>Budget</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Name of the table question whose total is the total project budget</shortDescription>
+        <value>Total project budget per year (in euros)</value>
+    </labels>
+    <labels>
+        <fullName>Chatter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Chatter</shortDescription>
+        <value>Chatter</value>
+    </labels>
+    <labels>
+        <fullName>Documents</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Documents</shortDescription>
+        <value>Documents</value>
+    </labels>
+    <labels>
+        <fullName>Formulaire_s</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Formulaire(s)</shortDescription>
+        <value>Formulaire(s)</value>
+    </labels>
+    <labels>
+        <fullName>Fund_Activities</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Fund Activities</shortDescription>
+        <value>Fund Activities</value>
+    </labels>
+    <labels>
+        <fullName>Fund_interactions</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Fund interactions</shortDescription>
+        <value>Fund interactions</value>
+    </labels>
+    <labels>
+        <fullName>Funds_interaction</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Funds Interaction</shortDescription>
+        <value>Funds Interaction</value>
+    </labels>
+    <labels>
+        <fullName>LanguageSwitcherAriaLabel</fullName>
+        <categories>LanguageSwitcher</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Language switcher accessible name</shortDescription>
+        <value>Language</value>
+    </labels>
+    <labels>
+        <fullName>LanguageSwitcherErrorMessage</fullName>
+        <categories>LanguageSwitcher</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Language switcher error message</shortDescription>
+        <value>Please try again. If the problem persists, contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>LanguageSwitcherErrorTitle</fullName>
+        <categories>LanguageSwitcher</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Language switcher error title</shortDescription>
+        <value>The language could not be changed</value>
+    </labels>
+    <labels>
+        <fullName>Main_Activities</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Main Activities</shortDescription>
+        <value>Main Activities</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_ContactCreated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Success message</shortDescription>
+        <value>The contact has been successfully created. They will receive an email to set their password and access the portal.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_ContactSupport</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Contact support paragraph</shortDescription>
+        <value>If you would like to change your point of contact, please contact AXA by email at [admin.finance.foundation@axa.com]</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_CreateContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Create contact button</shortDescription>
+        <value>Create Contact</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_ErrorNotOperationalContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Error: not operational contact</shortDescription>
+        <value>Only the organization&apos;s operational contact can create new contacts.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_ErrorRoleAlreadyAssigned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Error: role already assigned</shortDescription>
+        <value>A contact with this role already exists for your organization. Please select a different role or edit the existing contact.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_ErrorRoleLimitReached</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Error: role limit reached</shortDescription>
+        <value>Votre organisation a atteint la limite de 4 rôles. Seul le rôle de contact opérationnel peut être attribué à plusieurs contacts.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_MultiRoleInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Multiple roles info paragraph</shortDescription>
+        <value>Please note that a contact may be assigned multiple roles, such as project lead, legal/financial contact, etc.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_RoleLimitInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Role limit info paragraph</shortDescription>
+        <value>You are limited to one contact per role at a time. Each contact you create (or edit) will receive an email to set up their account.</value>
+    </labels>
+    <labels>
+        <fullName>PortalContactCreation_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Contact Creation - Title</shortDescription>
+        <value>Create Contact</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_BlockedContactName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Blocked screen operational contact label</shortDescription>
+        <value>Operational contact:</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_BlockedMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Blocked screen message</shortDescription>
+        <value>Contact the operational representative at your organization so they can create your user account. If that person is no longer with your organization, contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_BlockedTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Blocked screen title</shortDescription>
+        <value>Your organization already has a contact person</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ChangeOrganization</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Change organization button</shortDescription>
+        <value>Change the company name</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ConfirmationMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Confirmation screen message</shortDescription>
+        <value>You will receive an email to set your password.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ConfirmationTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Confirmation screen title</shortDescription>
+        <value>Your request has been recorded</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_CreateOrganization</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Create organization button</shortDescription>
+        <value>Create the account of your organization</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorDuplicateContact</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: duplicate contact</shortDescription>
+        <value>A contact with this email address already exists.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorDuplicateOrganization</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: duplicate organization</shortDescription>
+        <value>An organization with that name already exists.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorEmailAlreadyRegistered</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: email already registered</shortDescription>
+        <value>This email address already has access to the portal.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorEmailBelongsToAnotherOrganization</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: email belongs to another organization</shortDescription>
+        <value>This email address is associated with another organization.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorInvalidEmail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: invalid email</shortDescription>
+        <value>The email address is invalid.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorInvalidInput</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: invalid input</shortDescription>
+        <value>Some of the information you entered is invalid.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorLegalNameRequired</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: legal name required</shortDescription>
+        <value>Enter your organization&apos;s name.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorMissingData</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: missing data</shortDescription>
+        <value>The information you entered is incomplete.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorOrganizationAlreadyHasContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: organization already has contact</shortDescription>
+        <value>Your organization already has an operational contact.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorOrganizationDetailsRequired</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: organization details required</shortDescription>
+        <value>The organization&apos;s information is required.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorPortalUserCreationFailed</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: portal user creation failed</shortDescription>
+        <value>We were unable to create your portal account. Please try again or contact the AXA Foundation.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorTermsNotAccepted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: terms not accepted</shortDescription>
+        <value>You must agree to the terms and conditions.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorUnexpected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: unexpected error</shortDescription>
+        <value>An error has occurred. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note lead-in</shortDescription>
+        <value>À noter</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteOperationalContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note operational contact phrase</shortDescription>
+        <value>contact opérationnel (la personne créant le compte de l&apos;organisation)</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteParagraph1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note paragraph 1</shortDescription>
+        <value>Please note that organizations must register only once and designate an operational contact (the person responsible for creating the organization’s account) who will serve as the sole point of contact within the organization for the AXA Foundation for Human Progress. This contact person will be responsible for managing the overall relationship with the AXA Foundation for Human Progress and ensuring the highest quality and consistency of the proposals submitted.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteParagraph1End</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note paragraph 1 (text after the bold phrase)</shortDescription>
+        <value>comme point de contact unique pour la Fondation AXA pour le Progrès Humain au sein de l&apos;Organisation, en charge du suivi de la relation globale avec la Fondation AXA pour le Progrès Humain et de garantir la qualité et la cohérence optimales des propositions soumises.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteParagraph1Start</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note paragraph 1 (text before the bold phrase)</shortDescription>
+        <value>que les organisations n&apos;ont besoin de s&apos;inscrire qu&apos;une seule fois et doivent identifier un</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteParagraph2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note paragraph 2</shortDescription>
+        <value>The operational contact can then manage users within the organization&apos;s portal to grant access to other users.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_FooterNoteParagraph3</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Footer note paragraph 3</shortDescription>
+        <value>If your organization has recently changed its operational contact and you can no longer access the portal, please contact [admin.finance.foundation@axa.com].</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_Introduction</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Introduction text</shortDescription>
+        <value>Please note: Enter your organization’s official name in all capital letters, then select it from the list provided. You can then contact the organization’s designated representative and ask them to register you. Once your user account has been created, you will receive an email inviting you to set your password.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_LegalNameHelp</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Legal name field help text</shortDescription>
+        <value>Saisissez la raison sociale complète de votre organisme, telle qu&apos;elle figure sur vos statuts.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_LegalRepresentativeHelp</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Legal representative help bubble</shortDescription>
+        <value>Please note that the signatory to any contract must be designated as the Legal Representative.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_OrganizationMissing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Organization missing hint</shortDescription>
+        <value>If your organization is not listed in our system, please create an account for it to submit your request.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_OrganizationUnknown</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Organization unknown message</shortDescription>
+        <value>Your organization is not yet listed. Please enter its information to complete your registration.</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_Search</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Search button</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_SectionIdentity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Identity section title</shortDescription>
+        <value>Your contact information</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_SectionLegalRepresentative</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Legal representative section title</shortDescription>
+        <value>Legal Representative</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_SectionOrganizationDetails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Organization details section title</shortDescription>
+        <value>Overview of the Organization</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_Submit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Submit button</shortDescription>
+        <value>Sign up</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_Terms</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Terms checkbox label</shortDescription>
+        <value>I agree to the terms and conditions</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_TermsLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Terms link label</shortDescription>
+        <value>Read the Terms and Conditions</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Title</shortDescription>
+        <value>Create your organization</value>
+    </labels>
+    <labels>
+        <fullName>Program_Operational</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Operational</shortDescription>
+        <value>Operational</value>
+    </labels>
+    <labels>
+        <fullName>Project_CommitteeDecision</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Committee Decision</shortDescription>
+        <value>Committee Decision</value>
+    </labels>
+    <labels>
+        <fullName>Project_DueDiligence</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Due Diligence</shortDescription>
+        <value>Due Diligence</value>
+    </labels>
+    <labels>
+        <fullName>Project_Evaluations</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Evaluations</shortDescription>
+        <value>Evaluations</value>
+    </labels>
+    <labels>
+        <fullName>System_Information</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>System Informations</shortDescription>
+        <value>System Informations</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,4 @@
+.slds-modal__container:has(c-application-form-triage) {
+    width: 90% !important;
+    max-width: 90% !important;
+}

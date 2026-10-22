@@ -1,0 +1,140 @@
+<!--
+  @description       :
+  @author            : Kevin RAMAROZATOVO
+  @group             :
+  @last modified on  : 17-09-2026
+  @last modified by  : Kevin RAMAROZATOVO
+-->
+<template>
+  <lightning-quick-action-panel header={labels.title}>
+    <div ondecisionselect={handlePrequalificationSelect}>
+      <template lwc:if={fundingOpportunity}>
+        <div
+          class="slds-var-p-horizontal_medium slds-var-p-top_x-small slds-var-m-bottom_large"
+        >
+          <h3 class="slds-text-title_caps slds-var-m-bottom_x-small">
+            {labels.fundingOpportunity.sectionTitle}
+          </h3>
+          <dl class="slds-dl_horizontal">
+            <template lwc:if={fundingOpportunity.minimumAmount}>
+              <dt class="slds-dl_horizontal__label slds-text-color_weak">
+                {labels.fundingOpportunity.minimumAmount}
+              </dt>
+              <dd class="slds-dl_horizontal__detail">
+                <lightning-formatted-number
+                  value={fundingOpportunity.minimumAmount}
+                  format-style="currency"
+                  currency-code={currencyCode}
+                ></lightning-formatted-number>
+              </dd>
+            </template>
+            <template lwc:if={fundingOpportunity.maximumAmount}>
+              <dt class="slds-dl_horizontal__label slds-text-color_weak">
+                {labels.fundingOpportunity.maximumAmount}
+              </dt>
+              <dd class="slds-dl_horizontal__detail">
+                <lightning-formatted-number
+                  value={fundingOpportunity.maximumAmount}
+                  format-style="currency"
+                  currency-code={currencyCode}
+                ></lightning-formatted-number>
+              </dd>
+            </template>
+            <template lwc:if={fundingOpportunity.closingDate}>
+              <dt class="slds-dl_horizontal__label slds-text-color_weak">
+                {labels.fundingOpportunity.closingDate}
+              </dt>
+              <dd class="slds-dl_horizontal__detail">
+                <lightning-formatted-date-time
+                  value={fundingOpportunity.closingDate}
+                  day="2-digit"
+                  month="2-digit"
+                  year="numeric"
+                  time-zone="UTC"
+                ></lightning-formatted-date-time>
+              </dd>
+            </template>
+          </dl>
+        </div>
+
+        <h3
+          class="slds-text-title_caps slds-var-p-horizontal_medium slds-var-m-bottom_x-small"
+        >
+          {labels.applicationForms.sectionTitle}
+        </h3>
+
+        <div class="slds-var-p-bottom_small">
+          <lightning-radio-group
+            name="prequalificationFilter"
+            label={labels.filterLabel}
+            variant="label-hidden"
+            type="button"
+            options={filters}
+            value={currentFilter}
+            onchange={handleFilterChange}
+          ></lightning-radio-group>
+        </div>
+
+        <template lwc:if={visibleApplicationForms.length}>
+          <div class="table-wrapper">
+            <div class="table-viewport">
+              <c-application-form-triage-table
+                key-field="id"
+                data={visibleApplicationForms}
+                columns={columns}
+                sorted-by={sortedBy}
+                sorted-direction={sortDirection}
+                onsort={handleSort}
+                selected-rows={selectedRowIds}
+                onrowselection={handleRowSelection}
+              ></c-application-form-triage-table>
+            </div>
+
+            <template lwc:if={selectedRowCount}>
+              <div
+                class="bulk-bar slds-theme_alt-inverse slds-grid slds-grid_vertical-align-center slds-var-p-horizontal_small slds-var-p-vertical_x-small"
+              >
+                <lightning-button-icon
+                  class="slds-var-m-right_small"
+                  icon-name="utility:close"
+                  variant="border-inverse"
+                  size="small"
+                  title={labels.clearSelection}
+                  alternative-text={labels.clearSelection}
+                  onclick={handleClearSelection}
+                ></lightning-button-icon>
+                <span class="slds-text-body_small">{selectionSummary}</span>
+                <div class="separator"></div>
+                <c-decision-picker
+                  options={prequalificationOptions}
+                ></c-decision-picker>
+              </div>
+            </template>
+          </div>
+        </template>
+        <template lwc:else>
+          <p
+            class="slds-text-align_center slds-text-color_weak slds-var-p-around_xx-large"
+          >
+            {labels.feedback.emptyState}
+          </p>
+        </template>
+      </template>
+
+      <template lwc:else>
+        <div class="slds-is-relative slds-var-p-around_xx-large">
+          <lightning-spinner
+            alternative-text={labels.feedback.loading}
+          ></lightning-spinner>
+        </div>
+      </template>
+    </div>
+
+    <div slot="footer" class="slds-grid slds-grid_align-end">
+      <lightning-button
+        label={labels.close}
+        onclick={handleClose}
+      ></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
+</template>

@@ -1,0 +1,75 @@
+<template>
+  <lightning-card title={labels.title}>
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isBusy}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="medium"
+        ></lightning-spinner>
+      </template>
+
+      <lightning-input
+        name="firstName"
+        label={labels.fields.firstName}
+        value={contact.firstName}
+        required
+        onchange={handleFieldChange}
+      ></lightning-input>
+
+      <lightning-input
+        name="lastName"
+        label={labels.fields.lastName}
+        value={contact.lastName}
+        required
+        onchange={handleFieldChange}
+      ></lightning-input>
+
+      <lightning-input
+        name="email"
+        type="email"
+        label={labels.fields.email}
+        value={contact.email}
+        required
+        onchange={handleFieldChange}
+      ></lightning-input>
+
+      <lightning-input
+        name="phone"
+        type="tel"
+        label={labels.fields.phone}
+        value={contact.phone}
+        onchange={handleFieldChange}
+      ></lightning-input>
+
+      <lightning-combobox
+        name="role"
+        label={labels.fields.role}
+        value={contact.role}
+        options={roleOptions}
+        required
+        onchange={handleFieldChange}
+      ></lightning-combobox>
+
+      <div class="slds-var-m-top_medium">
+        <p>{labels.feedback.roleLimitInfo}</p>
+        <p class="slds-var-m-top_small">{labels.feedback.multiRoleInfo}</p>
+        <p class="slds-var-m-top_small">{labels.feedback.contactSupport}</p>
+      </div>
+
+      <template lwc:if={errorMessage}>
+        <p class="slds-text-color_error slds-var-m-top_small" role="alert">
+          {errorMessage}
+        </p>
+      </template>
+
+      <div class="slds-var-m-top_medium slds-text-align_center">
+        <lightning-button
+          variant="brand"
+          label={labels.createContact}
+          disabled={isBusy}
+          onclick={handleCreateContact}
+        ></lightning-button>
+      </div>
+    </div>
+  </lightning-card>
+</template>

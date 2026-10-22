@@ -1,0 +1,11 @@
+/* Align the button with the input box, below the field label */
+.add-email {
+    margin-top: 1.5rem;
+}
+
+.recipient-bucket {
+    min-height: 3.5rem;
+    max-height: 12rem;
+    overflow-y: auto;
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}

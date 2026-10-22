@@ -1,0 +1,365 @@
+<template>
+  <div class="arc slds-is-relative">
+    <template lwc:if={isBusy}>
+      <lightning-spinner alternative-text="Chargement" size="medium"></lightning-spinner>
+    </template>
+
+    <!-- Header -->
+    <div class="arc-header">
+      <h2 class="arc-title">{labels.title}</h2>
+      <p class="arc-subtitle">{programmeName}</p>
+    </div>
+
+    <!-- Load error -->
+    <template lwc:if={showError}>
+      <div class="arc-alert arc-alert_error" role="alert">
+        <strong>Impossible de charger les candidats.</strong>
+        <span>{loadError}</span>
+        <lightning-button variant="neutral" label="Réessayer" onclick={handleReload}></lightning-button>
+      </div>
+    </template>
+
+    <template lwc:if={showEmptyDecision}>
+      <p class="arc-empty">{labels.noDecision}</p>
+    </template>
+
+    <template lwc:if={showCandidates}>
+      <!-- ============================= STEP 1 : SELECT ============================= -->
+      <template lwc:if={isSelectView}>
+        <div class="arc-kpis">
+          <div class="arc-kpi">
+            <span class="arc-kpi-value">{overview.totalCandidates}</span>
+            <span class="arc-kpi-label">{labels.total}</span>
+          </div>
+          <div class="arc-kpi arc-kpi_accepted">
+            <span class="arc-kpi-value">{overview.totalAccepted}</span>
+            <span class="arc-kpi-label">{labels.accepted}</span>
+          </div>
+          <div class="arc-kpi arc-kpi_rejected">
+            <span class="arc-kpi-value">{overview.totalRejected}</span>
+            <span class="arc-kpi-label">{labels.rejected}</span>
+          </div>
+          <div class="arc-kpi">
+            <span class="arc-kpi-value">{overview.totalNotified}</span>
+            <span class="arc-kpi-label">{labels.notified}</span>
+          </div>
+        </div>
+
+        <!-- Accepted -->
+        <section class="arc-section">
+          <div class="arc-section-head arc-section-head_accepted">
+            <h3>{labels.accepted} ({overview.totalAccepted})</h3>
+            <lightning-button
+              variant="base"
+              label="Aperçu de l'e-mail"
+              onclick={toggleAcceptedPreview}
+            ></lightning-button>
+          </div>
+          <template lwc:if={showAcceptedPreview}>
+            <div class="arc-preview">
+              <p class="arc-preview-subject">{overview.acceptedTemplate.subject}</p>
+              <lightning-formatted-rich-text value={overview.acceptedTemplate.htmlBody}></lightning-formatted-rich-text>
+            </div>
+          </template>
+          <div class="arc-toolbar">
+            <lightning-input
+              type="search"
+              variant="label-hidden"
+              placeholder={labels.search}
+              onchange={handleAcceptedSearch}
+            ></lightning-input>
+          </div>
+          <div class="arc-table">
+            <template lwc:if={acceptedRows.length}>
+              <table class="arc-grid">
+                <thead>
+                  <tr>
+                    <th class="arc-col-check">
+                      <lightning-input
+                        type="checkbox"
+                        variant="label-hidden"
+                        label={labels.selectAll}
+                        title={labels.selectAll}
+                        data-section="accepted"
+                        checked={acceptedAllChecked}
+                        disabled={acceptedNoneSelectable}
+                        onchange={handleSelectAll}
+                      ></lightning-input>
+                    </th>
+                    <th>{overview.labels.projectName}</th>
+                    <th>{overview.labels.organisation}</th>
+                    <th>{overview.labels.email}</th>
+                    <th>{overview.labels.currentStatus}</th>
+                    <th>{overview.labels.notificationStatus}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={acceptedRows} for:item="row">
+                    <tr key={row.id} class={row.rowClass}>
+                      <td class="arc-col-check">
+                        <lightning-input
+                          type="checkbox"
+                          variant="label-hidden"
+                          label={row.projectName}
+                          data-id={row.id}
+                          checked={row.isSelected}
+                          disabled={row.notSelectable}
+                          onchange={handleRowToggle}
+                        ></lightning-input>
+                      </td>
+                      <td data-label={overview.labels.projectName}>
+                        <a href={row.recordUrl} target="_blank">{row.projectName}</a>
+                      </td>
+                      <td data-label={overview.labels.organisation}>{row.organisationName}</td>
+                      <td data-label={overview.labels.email}>{row.email}</td>
+                      <td data-label={overview.labels.currentStatus}>
+                        <span class={row.stageClass}>{row.stageLabel}</span>
+                      </td>
+                      <td data-label={overview.labels.notificationStatus}>
+                        <span class={row.statusClass} title={row.errorTitle}>{row.statusLabel}</span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </template>
+            <template lwc:else>
+              <p class="arc-empty">{labels.empty}</p>
+            </template>
+          </div>
+        </section>
+
+        <!-- Rejected -->
+        <section class="arc-section">
+          <div class="arc-section-head arc-section-head_rejected">
+            <h3>{labels.rejected} ({overview.totalRejected})</h3>
+            <lightning-button
+              variant="base"
+              label="Aperçu de l'e-mail"
+              onclick={toggleRejectedPreview}
+            ></lightning-button>
+          </div>
+          <template lwc:if={showRejectedPreview}>
+            <div class="arc-preview">
+              <p class="arc-preview-subject">{overview.rejectedTemplate.subject}</p>
+              <lightning-formatted-rich-text value={overview.rejectedTemplate.htmlBody}></lightning-formatted-rich-text>
+            </div>
+          </template>
+          <div class="arc-toolbar">
+            <lightning-input
+              type="search"
+              variant="label-hidden"
+              placeholder={labels.search}
+              onchange={handleRejectedSearch}
+            ></lightning-input>
+          </div>
+          <div class="arc-table">
+            <template lwc:if={rejectedRows.length}>
+              <table class="arc-grid">
+                <thead>
+                  <tr>
+                    <th class="arc-col-check">
+                      <lightning-input
+                        type="checkbox"
+                        variant="label-hidden"
+                        label={labels.selectAll}
+                        title={labels.selectAll}
+                        data-section="rejected"
+                        checked={rejectedAllChecked}
+                        disabled={rejectedNoneSelectable}
+                        onchange={handleSelectAll}
+                      ></lightning-input>
+                    </th>
+                    <th>{overview.labels.projectName}</th>
+                    <th>{overview.labels.organisation}</th>
+                    <th>{overview.labels.email}</th>
+                    <th>{overview.labels.currentStatus}</th>
+                    <th>{overview.labels.notificationStatus}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={rejectedRows} for:item="row">
+                    <tr key={row.id} class={row.rowClass}>
+                      <td class="arc-col-check">
+                        <lightning-input
+                          type="checkbox"
+                          variant="label-hidden"
+                          label={row.projectName}
+                          data-id={row.id}
+                          checked={row.isSelected}
+                          disabled={row.notSelectable}
+                          onchange={handleRowToggle}
+                        ></lightning-input>
+                      </td>
+                      <td data-label={overview.labels.projectName}>
+                        <a href={row.recordUrl} target="_blank">{row.projectName}</a>
+                      </td>
+                      <td data-label={overview.labels.organisation}>{row.organisationName}</td>
+                      <td data-label={overview.labels.email}>{row.email}</td>
+                      <td data-label={overview.labels.currentStatus}>
+                        <span class={row.stageClass}>{row.stageLabel}</span>
+                      </td>
+                      <td data-label={overview.labels.notificationStatus}>
+                        <span class={row.statusClass} title={row.errorTitle}>{row.statusLabel}</span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </template>
+            <template lwc:else>
+              <p class="arc-empty">{labels.empty}</p>
+            </template>
+          </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="arc-footer">
+          <lightning-button label="Fermer" onclick={handleClose}></lightning-button>
+          <div class="arc-footer-actions">
+            <lightning-button
+              label={retryLabel}
+              title="Réessayer les e-mails en échec"
+              disabled={disableRetry}
+              onclick={handleRetryFailed}
+            >
+            </lightning-button>
+            <lightning-button
+              variant="neutral"
+              label="Envoyer tous les acceptés"
+              disabled={disableSendAccepted}
+              onclick={handleSendAllAccepted}
+            ></lightning-button>
+            <lightning-button
+              variant="neutral"
+              label="Envoyer tous les rejetés"
+              disabled={disableSendRejected}
+              onclick={handleSendAllRejected}
+            ></lightning-button>
+            <lightning-button
+              variant="brand"
+              label={labels.sendSelected}
+              disabled={disableSendSelected}
+              onclick={handleSendSelected}
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+
+      <!-- ============================ STEP 2 : CONFIRM ============================ -->
+      <template lwc:if={isConfirmView}>
+        <div class="arc-confirm">
+          <h3 class="arc-confirm-title">{confirmTitle}</h3>
+          <div class="arc-alert arc-alert_warning" role="alert">
+            <strong>Cette action est irréversible.</strong>
+            <span>Les candidats concernés recevront immédiatement leur décision par e-mail.</span>
+          </div>
+          <template lwc:if={tooManySelected}>
+            <div class="arc-alert arc-alert_error" role="alert">{tooManyMessage}</div>
+          </template>
+
+          <ul class="arc-variants">
+            <template lwc:if={confirmHasAccepted}>
+              <li>
+                <span class="arc-pill arc-pill_accepted">Modèle « Candidature acceptée »</span>
+                {confirmAcceptedCount} e-mail(s)
+              
+                <div class="arc-text">
+                  <p class="arc-text-subject">{overview.acceptedTemplate.subject}</p>
+                  <p class="arc-text-body">{overview.acceptedTemplate.textBody}</p>
+                </div>
+              </li>
+            </template>
+            <template lwc:if={confirmHasRejected}>
+              <li>
+                <span class="arc-pill arc-pill_rejected">Modèle « Candidature rejetée »</span>
+                {confirmRejectedCount} e-mail(s)
+              
+                <div class="arc-text">
+                  <p class="arc-text-subject">{overview.rejectedTemplate.subject}</p>
+                  <p class="arc-text-body">{overview.rejectedTemplate.textBody}</p>
+                </div>
+              </li>
+            </template>
+          </ul>
+
+          <p class="arc-section-label">Destinataires</p>
+          <div class="arc-list arc-list_confirm">
+            <template for:each={confirmRows} for:item="row">
+              <div key={row.id} class="arc-row arc-row_compact">
+                <span class="arc-cell arc-cell_main">{row.candidateName}</span>
+                <span class="arc-cell arc-muted">{row.email}</span>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="arc-footer">
+          <lightning-button label="Précédent" onclick={handleCancelConfirm} disabled={isBusy}></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Confirmer l'envoi"
+            onclick={handleConfirmSend}
+            disabled={disableConfirm}
+          ></lightning-button>
+        </div>
+      </template>
+
+      <!-- ============================ STEP 3 : RESULT ============================= -->
+      <template lwc:if={isResultView}>
+        <div class="arc-result">
+          <template lwc:if={hasSent}>
+            <div class="arc-alert arc-alert_success" role="status">{successMessage}</div>
+          </template>
+
+          <template lwc:if={hasWarnings}>
+            <div class="arc-alert arc-alert_error" role="alert">
+              <template for:each={summary.warnings} for:item="warning">
+                <p key={warning}>{warning}</p>
+              </template>
+            </div>
+          </template>
+
+          <template lwc:if={hasFailures}>
+            <div class="arc-alert arc-alert_error" role="alert">
+              <strong>{failureTitle}</strong>
+              <ul class="arc-issues">
+                <template for:each={failedOutcomes} for:item="outcome">
+                  <li key={outcome.applicationFormId}>
+                    <b>{outcome.candidateName}</b> {outcome.email} — {outcome.message}
+                  </li>
+                </template>
+              </ul>
+              <p>Les envois réussis ne sont pas affectés. Corrigez le problème puis utilisez « Réessayer ».</p>
+            </div>
+          </template>
+
+          <template lwc:if={hasSkipped}>
+            <div class="arc-alert arc-alert_warning" role="status">
+              <strong>{skippedTitle}</strong>
+              <ul class="arc-issues">
+                <template for:each={skippedOutcomes} for:item="outcome">
+                  <li key={outcome.applicationFormId}>
+                    <b>{outcome.candidateName}</b> — {outcome.message}
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+        </div>
+        <div class="arc-footer">
+          <lightning-button label="Fermer" onclick={handleClose}></lightning-button>
+          <div class="arc-footer-actions">
+            <template lwc:if={hasFailures}>
+              <lightning-button
+                label="Réessayer les échecs"
+                onclick={handleRetryFailed}
+                disabled={disableRetry}
+              ></lightning-button>
+            </template>
+            <lightning-button variant="brand" label="Retour à la liste" onclick={handleBackToList}></lightning-button>
+          </div>
+        </div>
+      </template>
+    </template>
+  </div>
+</template>

@@ -1,0 +1,21 @@
+<!--
+  @description       : Renders the read-only notice when the program questions cannot be edited.
+  @author            : Kevin RAMAROZATOVO
+  @last modified on  : 07-10-2026
+  @last modified by  : Kevin RAMAROZATOVO
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   07-10-2026   KRA      Initial version
+-->
+<template>
+  <template lwc:if={isReadOnly}>
+    <div
+      class="notice slds-rich-text-editor__output slds-m-vertical_small"
+      role="note"
+    >
+      <h3 class="notice-title">{labels.title}</h3>
+      <p class="notice-message">{labels.message}</p>
+    </div>
+  </template>
+</template>

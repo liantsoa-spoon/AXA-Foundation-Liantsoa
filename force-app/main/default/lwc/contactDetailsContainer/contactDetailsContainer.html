@@ -1,0 +1,73 @@
+<template>
+  <lightning-layout multiple-rows>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-combobox
+        name="salutation"
+        label={labels.salutation}
+        value={value.salutation}
+        required={isEveryFieldRequired}
+        options={salutationOptions}
+        onchange={handleChange}
+      ></lightning-combobox>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="title"
+        label={labels.title}
+        value={value.title}
+        required={isEveryFieldRequired}
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="firstName"
+        label={labels.firstName}
+        value={value.firstName}
+        required
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="lastName"
+        label={labels.lastName}
+        value={value.lastName}
+        required
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="birthdate"
+        type="date"
+        label={labels.birthdate}
+        value={value.birthdate}
+        min="1900-01-01"
+        max={today}
+        required={isEveryFieldRequired}
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="email"
+        type="email"
+        label={labels.email}
+        value={value.email}
+        required
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item size="6" padding="horizontal-small">
+      <lightning-input
+        name="phone"
+        type="tel"
+        label={labels.phone}
+        value={value.phone}
+        required={isEveryFieldRequired}
+        onchange={handleChange}
+      ></lightning-input>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

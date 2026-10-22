@@ -1,0 +1,65 @@
+<!--
+  @description       : Displays the portal form URL for a Funding Opportunity with a copy button.
+  @author            : Kevin RAMAROZATOVO
+  @last modified on  : 05-10-2026
+  @last modified by  : Kevin RAMAROZATOVO
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   05-10-2026   KRA      Initial version
+-->
+<template>
+  <lightning-quick-action-panel header={labels.title}>
+    <template lwc:if={isLoading}>
+      <lightning-spinner
+        alternative-text={labels.feedback.loading}
+        size="small"
+      ></lightning-spinner>
+    </template>
+    <template lwc:elseif={formURL}>
+      <div class="slds-form-element slds-p-vertical_medium">
+        <span class="slds-form-element__label">{labels.formURLField}</span>
+        <div
+          class="slds-form-element__control slds-grid slds-grid_vertical-align-center slds-gutters_x-small"
+        >
+          <div class="slds-col slds-grow">
+            <div
+              class="slds-input slds-grid slds-grid_vertical-align-center"
+              title={formURL}
+            >
+              <lightning-formatted-url
+                class="slds-truncate"
+                value={formURL}
+                target="_blank"
+              ></lightning-formatted-url>
+            </div>
+          </div>
+          <div class="slds-col slds-no-flex">
+            <lightning-button
+              variant="brand"
+              label={labels.copy}
+              icon-name={copyIconName}
+              onclick={handleCopyClick}
+            ></lightning-button>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template lwc:elseif={loadErrorMessage}>
+      <div class="slds-text-color_error">
+        <p>{labels.feedback.loadErrorTitle}</p>
+        <p>{loadErrorMessage}</p>
+      </div>
+    </template>
+    <template lwc:else>
+      <p>{labels.feedback.noFormURL}</p>
+    </template>
+
+    <div slot="footer">
+      <lightning-button
+        label={labels.close}
+        onclick={handleCloseClick}
+      ></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
+</template>

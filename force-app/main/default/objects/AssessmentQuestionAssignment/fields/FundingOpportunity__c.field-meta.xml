@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FundingOpportunity__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Funding Opportunity</label>
+    <referenceTo>FundingOpportunity</referenceTo>
+    <relationshipLabel>Assessment Question Assignments</relationshipLabel>
+    <relationshipName>Assessment_Question_Assignments</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

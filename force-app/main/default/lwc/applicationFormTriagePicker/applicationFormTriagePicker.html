@@ -1,0 +1,27 @@
+<!--
+  @description       :
+  @author            : Kevin RAMAROZATOVO
+  @group             :
+  @last modified on  : 17-09-2026
+  @last modified by  : Kevin RAMAROZATOVO
+-->
+<template>
+  <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+    <template lwc:if={decidedOption}>
+      <span class={decidedOption.textClass}>{decidedOption.label}</span>
+    </template>
+    <template for:each={availableOptions} for:item="option">
+      <lightning-button-icon
+        key={option.value}
+        class={option.styleClass}
+        icon-name="utility:record"
+        variant="border-filled"
+        size="small"
+        title={option.label}
+        alternative-text={option.label}
+        data-value={option.value}
+        onclick={handleOptionClick}
+      ></lightning-button-icon>
+    </template>
+  </div>
+</template>

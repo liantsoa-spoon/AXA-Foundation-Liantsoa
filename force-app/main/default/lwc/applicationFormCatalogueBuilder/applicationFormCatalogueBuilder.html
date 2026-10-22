@@ -1,0 +1,497 @@
+<template>
+    <lightning-card title={cardTitle} icon-name="standard:questions_on_answers">
+        <!-- Actions d'en-tête : ajout d'une question (crée sa section à la volée) et suppression des clones cochés -->
+        <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+            <lightning-button
+                label={labels.addQuestion}
+                icon-name="utility:add"
+                onclick={openAddQuestionModal}
+                disabled={isCatalogLocked}
+            ></lightning-button>
+            <lightning-button
+                label={confirmSelectionLabel}
+                icon-name="utility:delete"
+                variant="destructive"
+                class="slds-m-left_x-small"
+                onclick={openSelectionConfirmationModal}
+                disabled={isConfirmSelectionDisabled}
+            ></lightning-button>
+        </div>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text={labels.loading} size="small"></lightning-spinner>
+        </template>
+
+        <div class="slds-p-around_small catalog-builder-scroll">
+            <!-- ==================================================================== -->
+            <!-- Questions rattachées à la Funding Opportunity, filtrées selon l'attribut -->
+            <!-- EOI configuré dans l'App Builder. Les clones préconfigurés sont cochables -->
+            <!-- pour suppression ; les questions CUSTOM gardent leurs actions habituelles. -->
+            <!-- ==================================================================== -->
+            <template if:false={hasCatalogSections}>
+                <div class="slds-illustration slds-illustration_small slds-p-vertical_medium">
+                    <p class="slds-text-body_regular slds-text-color_weak">
+                        {labels.emptyCatalog}
+                    </p>
+                </div>
+            </template>
+
+            <ul class="slds-accordion">
+                <template for:each={catalogSections} for:item="section">
+                    <li
+                        key={section.sectionId}
+                        class={section.sectionClass}
+                        data-id={section.sectionId}
+                        draggable={section.draggableValue}
+                        ondragstart={handleSectionDragStart}
+                        ondragover={handleSectionDragOver}
+                        ondrop={handleSectionDrop}
+                    >
+                        <div class="slds-accordion__summary">
+                            <template if:true={section.canDrag}>
+                                <span class="slds-icon_container slds-accordion__summary-action-icon">
+                                    <lightning-icon icon-name="utility:drag_and_drop" size="x-small" alternative-text={labels.dragSection}></lightning-icon>
+                                </span>
+                            </template>
+                            <h3 class="slds-accordion__summary-heading">
+                                <button
+                                    class="slds-button slds-button_reset slds-accordion__summary-action"
+                                    data-id={section.sectionId}
+                                    onclick={handleToggleSection}
+                                    title={section.label}
+                                >
+                                    <lightning-icon
+                                        icon-name="utility:chevronright"
+                                        size="x-small"
+                                        class="slds-accordion__summary-action-icon"
+                                    ></lightning-icon>
+                                    <span class="slds-truncate slds-p-left_x-small">{section.label}</span>
+                                </button>
+                            </h3>
+                            <div class="slds-accordion__summary-actions">
+                                <template if:true={section.isSectionLocked}>
+                                    <lightning-icon
+                                        icon-name="utility:lock"
+                                        size="x-small"
+                                        alternative-text={labels.lockedSectionIcon}
+                                        title={labels.lockedSectionTitle}
+                                        class="slds-m-right_x-small"
+                                    ></lightning-icon>
+                                </template>
+                                <template if:true={section.canAddQuestion}>
+                                    <lightning-button-icon
+                                        icon-name="utility:add"
+                                        variant="border-filled"
+                                        size="small"
+                                        alternative-text={labels.addQuestion}
+                                        title={labels.addQuestion}
+                                        data-section-id={section.sectionId}
+                                        onclick={openAddQuestionModal}
+                                        class="slds-m-right_xx-small"
+                                    ></lightning-button-icon>
+                                </template>
+                                <template if:true={section.isEditable}>
+                                    <lightning-button-icon
+                                        icon-name="utility:edit"
+                                        variant="border-filled"
+                                        size="small"
+                                        alternative-text={labels.editSection}
+                                        title={labels.editSection}
+                                        data-id={section.sectionId}
+                                        onclick={openEditSectionModal}
+                                        class="slds-m-right_xx-small"
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:delete"
+                                        variant="border-filled"
+                                        size="small"
+                                        alternative-text={labels.deleteSection}
+                                        title={labels.deleteSection}
+                                        data-id={section.sectionId}
+                                        data-type="section"
+                                        onclick={openRemoveModal}
+                                    ></lightning-button-icon>
+                                </template>
+                            </div>
+                        </div>
+
+                        <template if:true={section.isExpanded}>
+                            <div class="slds-accordion__content">
+                                <template if:true={section.questions.length}>
+                                    <ul class="slds-has-dividers_around-space">
+                                        <template for:each={section.questions} for:item="question">
+                                            <li
+                                                key={question.assignmentId}
+                                                class={question.itemClass}
+                                                data-id={question.assignmentId}
+                                                data-section-id={section.sectionId}
+                                                draggable={question.draggableValue}
+                                                ondragstart={handleQuestionDragStart}
+                                                ondragover={handleQuestionDragOver}
+                                                ondragleave={handleQuestionDragLeave}
+                                                ondrop={handleQuestionDrop}
+                                            >
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                                        <template if:true={question.canDrag}>
+                                                            <lightning-icon
+                                                                icon-name="utility:drag_and_drop"
+                                                                size="xx-small"
+                                                                alternative-text={labels.dragQuestion}
+                                                                class="slds-m-right_x-small"
+                                                            ></lightning-icon>
+                                                        </template>
+                                                        <template if:true={question.canSelectForRemoval}>
+                                                            <lightning-input
+                                                                type="checkbox"
+                                                                label={question.label}
+                                                                data-id={question.assignmentId}
+                                                                checked={question.isSelected}
+                                                                onchange={handleTemplateQuestionToggle}
+                                                            ></lightning-input>
+                                                        </template>
+                                                        <template if:false={question.canSelectForRemoval}>
+                                                            <span>{question.label}</span>
+                                                        </template>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                                        <lightning-badge label={question.displayType} class="slds-m-right_x-small"></lightning-badge>
+                                                        <template if:true={question.showEoiBadge}>
+                                                            <lightning-badge
+                                                                label={labels.eoiBadge}
+                                                                class="slds-m-right_x-small eoi-badge"
+                                                            ></lightning-badge>
+                                                        </template>
+                                                        <template if:true={question.canEdit}>
+                                                            <lightning-button-icon
+                                                                icon-name="utility:edit"
+                                                                variant="bare"
+                                                                size="small"
+                                                                alternative-text={labels.editQuestion}
+                                                                title={labels.editQuestion}
+                                                                data-question-id={question.questionId}
+                                                                data-section-id={section.sectionId}
+                                                                onclick={openEditQuestionModal}
+                                                                class="slds-m-left_x-small"
+                                                            ></lightning-button-icon>
+                                                        </template>
+                                                        <template if:true={question.canDelete}>
+                                                            <lightning-button-icon
+                                                                icon-name="utility:delete"
+                                                                variant="bare"
+                                                                size="small"
+                                                                alternative-text={labels.deleteQuestion}
+                                                                title={labels.deleteQuestion}
+                                                                data-id={question.assignmentId}
+                                                                data-type="question"
+                                                                onclick={openRemoveModal}
+                                                                class="slds-m-left_x-small"
+                                                            ></lightning-button-icon>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template if:false={section.questions.length}>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-p-around_x-small">
+                                        {labels.emptySection}
+                                    </p>
+                                </template>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </lightning-card>
+
+    <!-- Confirmation de suppression des clones préconfigurés sélectionnés. -->
+    <template if:true={isSelectionConfirmationModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{labels.selectionModal.title}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>
+                        {labels.selectionModal.body}
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button
+                        label={labels.cancel}
+                        onclick={closeSelectionConfirmationModal}
+                        disabled={isSaving}
+                    ></lightning-button>
+                    <lightning-button
+                        label={labels.delete}
+                        variant="destructive"
+                        class="slds-m-left_x-small"
+                        onclick={confirmSelectedTemplateQuestions}
+                        disabled={isSaving}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal Ajouter/Modifier une section -->
+    <template if:true={isSectionModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{sectionModalTitle}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-section slds-is-open slds-m-bottom_small">
+                        <h3 class="slds-section__title slds-theme_shade">
+                            <span class="slds-p-horizontal_small slds-truncate">{labels.information}</span>
+                        </h3>
+                    </div>
+                    <div class="slds-p-top_small">
+                        <lightning-input
+                            label={labels.sectionModal.sectionLabel}
+                            value={newSectionLabel}
+                            onchange={handleNewSectionLabelChange}
+                            required
+                            class="section-label-field"
+                        ></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label={labels.cancel} onclick={closeSectionModal} disabled={isSaving}></lightning-button>
+                    <lightning-button
+                        label={labels.save}
+                        variant="brand"
+                        class="slds-m-left_x-small"
+                        onclick={saveSection}
+                        disabled={isSaving}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal Ajouter/Modifier une question -->
+    <template if:true={isQuestionModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{questionModalTitle}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-text-body_small slds-p-bottom_small slds-text-color_weak">
+                        {labels.questionModal.draftPrefix} <strong>{labels.questionModal.draftStatus}</strong>
+                    </div>
+                    <template if:true={isNewQuestionSection}>
+                        <div class="slds-section slds-is-open slds-m-bottom_small">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-p-horizontal_small slds-truncate">{labels.questionModal.section}</span>
+                            </h3>
+                        </div>
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                <lightning-combobox
+                                    label={labels.questionModal.section}
+                                    value={selectedNewQuestionSectionId}
+                                    options={existingSectionOptions}
+                                    onchange={handleNewQuestionSectionChange}
+                                    required
+                                    class="question-required-field"
+                                ></lightning-combobox>
+                            </div>
+                            <template if:true={isCreatingNewSection}>
+                                <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                    <lightning-input
+                                        label={labels.questionModal.newSectionName}
+                                        value={newQuestionSectionName}
+                                        onchange={handleNewQuestionSectionNameChange}
+                                        required
+                                        class="question-required-field"
+                                    ></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <div class="slds-section slds-is-open slds-m-bottom_small">
+                        <h3 class="slds-section__title slds-theme_shade">
+                            <span class="slds-p-horizontal_small slds-truncate">{labels.information}</span>
+                        </h3>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                            <lightning-combobox
+                                label={labels.questionModal.dataType}
+                                value={questionDataType}
+                                options={dataTypeOptions}
+                                onchange={handleQuestionDataTypeChange}
+                            ></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                            <lightning-textarea
+                                label={questionTextLabel}
+                                value={questionText}
+                                onchange={handleQuestionTextChange}
+                                required
+                                class="question-required-field"
+                            ></lightning-textarea>
+                        </div>
+                        <template if:true={hasFrenchFields}>
+                            <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                <lightning-textarea
+                                    label={labels.questionModal.questionTextFr}
+                                    field-level-help={labels.questionModal.questionTextFrHelp}
+                                    value={questionTextFr}
+                                    onchange={handleQuestionTextFrChange}
+                                ></lightning-textarea>
+                            </div>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                            <lightning-textarea
+                                label={labels.questionModal.description}
+                                value={questionDescription}
+                                onchange={handleQuestionDescriptionChange}
+                            ></lightning-textarea>
+                        </div>
+                        <template if:true={questionHasResponseValues}>
+                            <div class={responseValuesSizeClass}>
+                                <lightning-textarea
+                                    label={questionResponseValuesLabel}
+                                    field-level-help={labels.questionModal.responseValuesHelp}
+                                    value={questionResponseValues}
+                                    onchange={handleQuestionResponseValuesChange}
+                                ></lightning-textarea>
+                            </div>
+                            <template if:true={hasFrenchFields}>
+                                <div class={responseValuesSizeClass}>
+                                    <lightning-textarea
+                                        label={labels.questionModal.responseValuesFr}
+                                        field-level-help={labels.questionModal.responseValuesFrHelp}
+                                        value={questionResponseValuesFr}
+                                        onchange={handleQuestionResponseValuesFrChange}
+                                    ></lightning-textarea>
+                                </div>
+                            </template>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                            <lightning-input
+                                label={labels.questionModal.helpText}
+                                value={questionHelpText}
+                                onchange={handleQuestionHelpTextChange}
+                            ></lightning-input>
+                        </div>
+                        <template if:true={questionSupportsMaximumCharacters}>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    type="number"
+                                    label={labels.questionModal.maximumCharacters}
+                                    value={questionMaximumCharacters}
+                                    min="1"
+                                    step="1"
+                                    required={questionRequiresMaximumCharacters}
+                                    class="question-required-field"
+                                    message-when-value-missing={labels.questionModal.maximumCharactersMissing}
+                                    message-when-range-underflow={labels.questionModal.maximumCharactersUnderflow}
+                                    onchange={handleQuestionMaximumCharactersChange}
+                                ></lightning-input>
+                            </div>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                            <lightning-input
+                                type="checkbox"
+                                label={labels.questionModal.mandatory}
+                                checked={questionIsMandatory}
+                                onchange={handleQuestionIsMandatoryChange}
+                            ></lightning-input>
+                        </div>
+                    </div>
+
+                    <template if:true={questionIsTable}>
+                        <div class="slds-section slds-is-open slds-m-vertical_small">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-p-horizontal_small slds-truncate">{labels.questionModal.tableColumns}</span>
+                            </h3>
+                        </div>
+                        <template for:each={questionColumns} for:item="column" for:index="columnIndex">
+                            <div key={column.key} class="slds-grid slds-gutters slds-p-bottom_small slds-grid_vertical-align-end">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input
+                                        label={labels.questionModal.columnName}
+                                        value={column.label}
+                                        data-index={columnIndex}
+                                        onchange={handleColumnLabelChange}
+                                    ></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-combobox
+                                        label={labels.questionModal.dataType}
+                                        value={column.dataType}
+                                        options={columnDataTypeOptions}
+                                        data-index={columnIndex}
+                                        onchange={handleColumnDataTypeChange}
+                                    ></lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12">
+                                    <lightning-button-icon
+                                        icon-name="utility:delete"
+                                        alternative-text={labels.questionModal.deleteColumn}
+                                        title={labels.questionModal.deleteColumn}
+                                        data-index={columnIndex}
+                                        onclick={handleRemoveColumn}
+                                    ></lightning-button-icon>
+                                </div>
+                            </div>
+                        </template>
+                        <lightning-button
+                            label={labels.questionModal.addColumn}
+                            icon-name="utility:add"
+                            onclick={handleAddColumn}
+                        ></lightning-button>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label={labels.cancel} onclick={closeQuestionModal} disabled={isSaving}></lightning-button>
+                    <lightning-button
+                        label={labels.save}
+                        variant="brand"
+                        class="slds-m-left_x-small"
+                        onclick={saveQuestion}
+                        disabled={isSaving}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal de suppression -->
+    <template if:true={isRemoveModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{removeModalTitle}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>
+                        <strong>{labels.removeModal.permanentDelete}</strong> {removeModalBody}
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label={labels.cancel} onclick={closeRemoveModal} disabled={isSaving}></lightning-button>
+                    <lightning-button
+                        label={labels.removeModal.permanentDelete}
+                        variant="destructive"
+                        class="slds-m-left_x-small"
+                        onclick={handlePermanentDelete}
+                        disabled={isSaving}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

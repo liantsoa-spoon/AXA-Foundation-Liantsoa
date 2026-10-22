@@ -1,0 +1,8 @@
+<template>
+  <template lwc:if={isLoading}>
+    <lightning-spinner alternative-text="Chargement" size="medium"></lightning-spinner>
+  </template>
+  <template lwc:if={errorMessage}>
+    <p class="slds-text-color_error slds-var-p-around_medium">{errorMessage}</p>
+  </template>
+</template>

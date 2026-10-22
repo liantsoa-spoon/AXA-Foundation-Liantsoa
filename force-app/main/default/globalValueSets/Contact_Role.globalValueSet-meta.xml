@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Legal Representative</fullName>
+        <default>false</default>
+        <label>Legal Representative</label>
+    </customValue>
+    <customValue>
+        <fullName>Administrative or Operational Representative</fullName>
+        <default>false</default>
+        <label>Administrative or Operational Representative</label>
+    </customValue>
+    <customValue>
+        <fullName>Officer / Board Member</fullName>
+        <default>false</default>
+        <label>Officer / Board Member</label>
+    </customValue>
+    <customValue>
+        <fullName>Evaluator</fullName>
+        <default>false</default>
+        <label>Evaluator</label>
+    </customValue>
+    <customValue>
+        <fullName>AXA Internal</fullName>
+        <default>false</default>
+        <label>AXA Internal</label>
+    </customValue>
+    <customValue>
+        <fullName>Other (please specify)</fullName>
+        <default>false</default>
+        <label>Other (please specify)</label>
+    </customValue>
+    <customValue>
+        <fullName>Project applicant lead</fullName>
+        <default>false</default>
+        <label>Project applicant lead</label>
+    </customValue>
+    <customValue>
+        <fullName>Project partner lead</fullName>
+        <default>false</default>
+        <label>Project partner lead</label>
+    </customValue>
+    <customValue>
+        <fullName>Supplier</fullName>
+        <default>false</default>
+        <label>Supplier</label>
+    </customValue>
+    <masterLabel>Contact - Role</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

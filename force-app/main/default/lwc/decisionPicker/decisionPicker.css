@@ -1,0 +1,81 @@
+.decision {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.25rem;
+  border: 1px solid;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.decision svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.approve,
+.green {
+  border-color: #2e844a;
+}
+
+.approve svg,
+.green svg {
+  fill: #2e844a;
+}
+
+.approve:hover,
+.chosen.approve,
+.green:hover,
+.chosen.green {
+  border-color: #2e844a;
+  background-color: #2e844a;
+}
+
+.reject,
+.red {
+  border-color: #ea001e;
+}
+
+.reject svg,
+.red svg {
+  fill: #ea001e;
+}
+
+.reject:hover,
+.chosen.reject,
+.red:hover,
+.chosen.red {
+  border-color: #ea001e;
+  background-color: #ea001e;
+}
+
+.orange {
+  border-color: #fe9339;
+}
+
+.orange svg {
+  fill: #fe9339;
+}
+
+.orange:hover,
+.chosen.orange {
+  border-color: #fe9339;
+  background-color: #fe9339;
+}
+
+.decision:hover svg,
+.chosen svg {
+  fill: #fff;
+}
+
+.muted {
+  border-color: #c9c9c9;
+  background-color: #f3f3f3;
+}
+
+.muted svg {
+  fill: #c9c9c9;
+}

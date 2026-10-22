@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CallForProjects</fullName>
+    <active>true</active>
+    <label>Call For Projects</label>
+    <picklistValues>
+        <picklist>Stage</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Canceled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Draft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EOI Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EOI Draft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EOI Not Selected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EOI Submitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Signed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Submitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Evaluation</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

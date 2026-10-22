@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Risk to People and Well-Being, France</fullName>
+        <default>false</default>
+        <label>Risk to People and Well-Being, France</label>
+    </customValue>
+    <customValue>
+        <fullName>Risk to People and Well-Being, Outside France</fullName>
+        <default>false</default>
+        <label>Risk to People and Well-Being, Outside France</label>
+    </customValue>
+    <customValue>
+        <fullName>Risk to the Planet</fullName>
+        <default>false</default>
+        <label>Risk to the Planet</label>
+    </customValue>
+    <customValue>
+        <fullName>Risk to Societies</fullName>
+        <default>false</default>
+        <label>Risk to Societies</label>
+    </customValue>
+    <customValue>
+        <fullName>Prevention</fullName>
+        <default>false</default>
+        <label>Prevention</label>
+    </customValue>
+    <customValue>
+        <fullName>Cultural Participation</fullName>
+        <default>false</default>
+        <label>Cultural Participation</label>
+    </customValue>
+    <customValue>
+        <fullName>Artistic and Cultural Innovation</fullName>
+        <default>false</default>
+        <label>Artistic and Cultural Innovation</label>
+    </customValue>
+    <customValue>
+        <fullName>International Cultural Reach</fullName>
+        <default>false</default>
+        <label>International Cultural Reach</label>
+    </customValue>
+    <customValue>
+        <fullName>Citizenship</fullName>
+        <default>false</default>
+        <label>Citizenship</label>
+    </customValue>
+    <customValue>
+        <fullName>Territorial Cohesion</fullName>
+        <default>false</default>
+        <label>Territorial Cohesion</label>
+    </customValue>
+    <customValue>
+        <fullName>Knowledge and Scientific Support</fullName>
+        <default>false</default>
+        <label>Knowledge and Scientific Support</label>
+    </customValue>
+    <customValue>
+        <fullName>Conservation and Restoration</fullName>
+        <default>false</default>
+        <label>Conservation and Restoration</label>
+    </customValue>
+    <customValue>
+        <fullName>Awareness, Education and Mobilisation</fullName>
+        <default>false</default>
+        <label>Awareness, Education and Mobilisation</label>
+    </customValue>
+    <customValue>
+        <fullName>Capacity Building and Financial Mechanisms</fullName>
+        <default>false</default>
+        <label>Capacity Building and Financial Mechanisms</label>
+    </customValue>
+    <customValue>
+        <fullName>Education</fullName>
+        <default>false</default>
+        <label>Education</label>
+    </customValue>
+    <customValue>
+        <fullName>Disability and Caregivers</fullName>
+        <default>false</default>
+        <label>Disability and Caregivers</label>
+    </customValue>
+    <customValue>
+        <fullName>Violence Against Women and Children</fullName>
+        <default>false</default>
+        <label>Violence Against Women and Children</label>
+    </customValue>
+    <customValue>
+        <fullName>Entrepreneurship and Financial Education</fullName>
+        <default>false</default>
+        <label>Entrepreneurship and Financial Education</label>
+    </customValue>
+    <customValue>
+        <fullName>Food Aid</fullName>
+        <default>false</default>
+        <label>Food Aid</label>
+    </customValue>
+    <customValue>
+        <fullName>Support for Refugees</fullName>
+        <default>false</default>
+        <label>Support for Refugees</label>
+    </customValue>
+    <customValue>
+        <fullName>Other Projects</fullName>
+        <default>false</default>
+        <label>Other Projects</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>Project - Theme</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

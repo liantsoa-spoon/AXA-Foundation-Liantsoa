@@ -1,0 +1,28 @@
+<!--
+  @description       : Renders the EN | FR language links of the portal.
+  @author            : Liantsoa Andrianilana
+  @last modified on  : 07-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   07-10-2026   LAN      Initial version
+-->
+<template>
+  <div class="language-switcher" role="group" aria-label={ariaLabel}>
+    <template for:each={languageOptions} for:item="language">
+      <span key={language.code} class="language-switcher__item">
+        <button
+          type="button"
+          class={language.className}
+          data-code={language.code}
+          aria-current={language.ariaCurrent}
+          disabled={isLoading}
+          onclick={handleLanguageClick}
+        >
+          {language.label}
+        </button>
+      </span>
+    </template>
+  </div>
+</template>

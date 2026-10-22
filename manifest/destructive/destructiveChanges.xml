@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Deletes the site "AXA Foundation Application Form" created by mistake in the dev sandbox.
+  "AXA Foundation Portal" (Aura, Active) is NOT concerned: do not add it here.
+-->
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>site/AXA_Foundation_Application_Form1</members>
+        <name>DigitalExperienceBundle</name>
+    </types>
+    <types>
+        <members>AXA_Foundation_Application_Form1</members>
+        <name>DigitalExperienceConfig</name>
+    </types>
+    <types>
+        <members>AXA_Foundation_Application_Form</members>
+        <name>CustomSite</name>
+    </types>
+    <types>
+        <members>AXA Foundation Application Form</members>
+        <name>Network</name>
+    </types>
+    <version>67.0</version>
+</Package>

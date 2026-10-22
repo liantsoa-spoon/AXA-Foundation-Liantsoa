@@ -1,0 +1,54 @@
+<template>
+  <div class="container">
+    <h2 class="title">{labels.title}</h2>
+    <p class="subtitle">{countLabel}</p>
+
+    <template lwc:if={errorMessage}>
+      <p class="error" role="alert">{errorMessage}</p>
+    </template>
+
+    <div class="card-grid">
+      <template for:each={contacts} for:item="contact">
+        <div class="card" key={contact.id}>
+          <div class="card-header">
+            <div class="avatar">{contact.initials}</div>
+            <div class="card-heading">
+              <a
+                href={contact.detailUrl}
+                class="contact-name"
+                data-id={contact.id}
+                onclick={handleOpenContact}
+                >{contact.name}</a
+              >
+              <template lwc:if={contact.role}>
+                <span class="role-badge">{contact.role}</span>
+              </template>
+            </div>
+          </div>
+          <div class="card-body">
+            <template lwc:if={contact.email}>
+              <p class="contact-detail">
+                <lightning-icon
+                  icon-name="utility:email"
+                  size="xx-small"
+                  class="detail-icon"
+                ></lightning-icon>
+                <a href={contact.emailHref}>{contact.email}</a>
+              </p>
+            </template>
+            <template lwc:if={contact.phone}>
+              <p class="contact-detail">
+                <lightning-icon
+                  icon-name="utility:call"
+                  size="xx-small"
+                  class="detail-icon"
+                ></lightning-icon>
+                <a href={contact.phoneHref}>{contact.phone}</a>
+              </p>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

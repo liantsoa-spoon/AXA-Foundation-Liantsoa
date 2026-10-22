@@ -1,0 +1,26 @@
+<!--
+  @description       : Aura login form container with slot for Experience Builder standard login form
+  @author            : KGA
+  @group             : 
+-->
+<aura:component description="Login form container with slot for standard login form" access="global">
+    <aura:attribute name="content" type="Aura.Component[]" required="false" description="Slot for standard login form or other components from Experience Builder"/>
+
+    <div class="loginFormContainerAura login-card">
+        <h2 class="login-title">Sign in</h2>
+        <p class="login-subtitle">Sign in with the email and password selected during registration/activation</p>
+
+        <div class="login-form-container">
+            {!v.content}
+        </div>
+
+        <!-- <p class="legal-text">
+            En vous connectant, vous acceptez les <a href="{!$Label.c.ECGeneralTermsOfUseLink}" target="_blank" rel="noopener noreferrer">conditions générales d'utilisation</a>
+        </p> -->
+
+        <!-- <div class="horizontal-divider"></div>
+
+        <p class="account-prompt">Haven't created your account yet?</p>
+        <button type="button" class="btn-create-account" aria-label="Create my account" onclick="{!c.handleCreateAccount}">Create my account</button> -->
+    </div>
+</aura:component>

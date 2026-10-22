@@ -1,0 +1,165 @@
+.THIS.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    font-family: 'EDF2020' !important;
+}
+
+/* Two full-width sections under the header: form on the left, image on the right */
+.THIS .main-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    flex: 1;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Footer always at bottom (page-wrapper is flex column, main-content has flex: 1) */
+.THIS .layout-footer {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.THIS .login-form-column {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: clamp(0rem, 2vw, 4rem) clamp(0.5rem, 5vw, 3.375rem);
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.THIS .login-form-column > * {
+    width: 100%;
+    max-width: 672px;
+}
+
+/* Right section: stretches to the full height of the row so a background image can fill it */
+.THIS .brand-info-column {
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #f5f6f9;
+}
+
+.THIS .brand-info-column > * {
+    flex: 1 1 auto;
+}
+
+.THIS .service-links-mobile {
+    display: none;
+    width: 100%;
+    order: 3;
+}
+
+/* Overriding the default styling of the default Login Form */
+.THIS.uiInput {
+    width: 100% !important;
+}
+
+.THIS .slds-icon-utility-user {
+    display: none !important;
+}
+
+.THIS .slds-icon-utility-lock {
+    display: none !important;
+}
+
+.THIS .inputContainer {
+    border-radius: 0.5rem !important;
+    border: 1px solid #D1D6E1 !important;
+    font-family: 'EDF2020' !important;
+    padding: 0 !important;
+}
+
+.THIS .inputContainer:first-of-type {
+    margin-bottom: 1.5rem !important;
+}
+
+.THIS .inputBox {
+    height: 43px;
+    padding: 6px 12px !important;
+    margin: 0 !important;
+    line-height: 0 !important;
+    min-height: stretch !important;
+    border-radius: 0.5rem !important;
+}
+
+.THIS div:has(.loginButton) {
+    text-align: center !important;
+}
+
+.THIS .loginButton {
+    background-color: #001A70 !important;
+    border-color: #001A70 !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 1.125rem !important;
+    width: fit-content !important;
+    border-radius: 4rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
+    font-family: 'EDF2020' !important;
+}
+
+.THIS .inverseTextColor {
+    color: #001A70 !important;
+    text-decoration: underline !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    margin: 0 !important;
+    font-family: 'EDF2020' !important;
+}
+
+.THIS .salesforceIdentityLoginForm2 div:last-child a {
+    color: #001A70 !important;
+}
+/* End of Overriding the default styling of the default Login Form */ 
+
+@media (max-width: 1024px) {
+    .THIS .main-content {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .THIS .login-form-column {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 3rem 2rem;
+    }
+
+    .THIS .brand-info-column {
+        grid-column: 1;
+        grid-row: 2;
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .THIS .login-form-column {
+        padding: 2rem 1rem 2.5rem;
+    }
+
+    .THIS .brand-info-column {
+        min-height: 220px;
+    }
+
+    .THIS .service-links-mobile {
+        display: block;
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .THIS .loginButton {
+        width: 100% !important;
+    }
+}

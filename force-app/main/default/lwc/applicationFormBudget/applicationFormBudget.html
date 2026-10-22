@@ -1,0 +1,65 @@
+<!--
+  @description       : Renders the budget block of the application form: its two amounts and its tables.
+  @author            : Liantsoa Andrianilana
+  @last modified on  : 19-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   19-10-2026   LAN      Initial version
+-->
+<template>
+  <div lwc:if={isLoading} class="slds-is-relative slds-p-around_large">
+    <lightning-spinner alternative-text={labels.loading} size="small"></lightning-spinner>
+  </div>
+
+  <div lwc:if={hasLoadError} class="slds-scoped-notification slds-scoped-notification_light" role="status">
+    <p>{labels.loadError}</p>
+  </div>
+
+  <template lwc:if={hasTables}>
+    <!-- The two amounts of the form, computed from their tables: read-only. -->
+    <div lwc:if={hasAmounts} class="slds-grid slds-wrap slds-gutters slds-p-bottom_medium">
+      <div lwc:if={hasTotalProjectBudget} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <div class="slds-form-element slds-form-element_readonly">
+          <span class="slds-form-element__label">{labels.totalProjectBudget}</span>
+          <div class="slds-form-element__control">
+            <div class="slds-form-element__static">
+              <lightning-formatted-number
+                value={totalProjectBudget}
+                format-style="currency"
+                currency-code={currencyCode}
+              ></lightning-formatted-number>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div lwc:if={hasRequestedAmount} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+        <div class="slds-form-element slds-form-element_readonly">
+          <span class="slds-form-element__label">{labels.requestedAmount}</span>
+          <div class="slds-form-element__control">
+            <div class="slds-form-element__static">
+              <lightning-formatted-number
+                value={requestedAmount}
+                format-style="currency"
+                currency-code={currencyCode}
+              ></lightning-formatted-number>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template for:each={tables} for:item="table">
+      <div key={table.config.questionId} class="slds-p-bottom_medium">
+        <c-budget-table
+          config={table.config}
+          rows={table.rows}
+          read-only={readOnly}
+          form-language={formLanguage}
+          ontablechange={handleTableChange}
+        ></c-budget-table>
+      </div>
+    </template>
+  </template>
+</template>

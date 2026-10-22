@@ -1,0 +1,152 @@
+/* organisation for Human Progress, Institution portal header (UX designer variant A)
+   Tokens: action #00008c | strong #0c0e45 | rule rgba(12,14,69,.2) | surface-alt #f2f1ef */
+:host {
+    display: block;
+}
+
+.site-header {
+    box-sizing: border-box;
+    min-height: 96px;
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid rgba(12, 14, 69, 0.2);
+    background: #ffffff;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.brand-link {
+    display: flex;
+}
+
+.logo {
+    display: block;
+    height: 52px;
+    width: auto;
+}
+
+.brand-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(12, 14, 69, 0.2);
+}
+
+.portal-title {
+    font-family: 'Publico', 'Publico Text', Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.25;
+    color: #0c0e45;
+}
+
+.account-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.home-link {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: #0c0e45;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 11px 24px;
+    border: 1px solid #0c0e45;
+    border-radius: 9999px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 150ms, color 150ms, border-color 150ms;
+}
+
+.btn--outline {
+    background: transparent;
+    color: #0c0e45;
+}
+
+.btn--outline:hover {
+    background: #0c0e45;
+    color: #ffffff;
+}
+
+.btn--current {
+    background: #00008c;
+    border-color: #00008c;
+    color: #ffffff;
+}
+
+.btn--current:hover {
+    background: #0c0e45;
+    border-color: #0c0e45;
+    color: #ffffff;
+}
+
+.btn:focus-visible,
+.brand-link:focus-visible {
+    outline: 2px solid #00008c;
+    outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+    .site-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        min-height: 0;
+        padding: 16px 24px;
+    }
+
+    .brand {
+        justify-content: space-between;
+    }
+
+    .brand-divider,
+    .portal-title {
+        display: none;
+    }
+
+    .logo {
+        height: 44px;
+    }
+
+    .account-nav {
+        display: grid;
+        grid-template-columns: 44px repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .account-nav .btn {
+        padding: 11px 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+        transition: none;
+    }
+}

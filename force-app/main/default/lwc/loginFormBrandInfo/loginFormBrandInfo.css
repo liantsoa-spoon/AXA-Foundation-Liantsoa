@@ -1,0 +1,46 @@
+/* LoginFormBrandInfo - font: sans-serif; dark blue titles, black text, blue links */
+.login-form-brand-info {
+    font-size: clamp(0.9375rem, 1.5vw + 0.5rem, 1rem);
+    font-weight: 400;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-login-org {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 536.5 / 445;
+    object-fit: cover;
+}
+
+.brand-description {
+    margin: 1.5rem 0 0.5rem;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
+    color: #001A70;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: start;
+    font-family: 'EDF2020' !important;
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .logo-izi-by-edf {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .lwc18-ec-brand-info {
+        width: 100%;
+    }
+
+    .brand-description {
+        margin: 1rem 0 0.5rem;
+    }
+}

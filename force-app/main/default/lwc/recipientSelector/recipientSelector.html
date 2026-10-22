@@ -1,0 +1,141 @@
+<template>
+    <div class="slds-form-element">
+        <div class="slds-combobox_container">
+            <div class={comboboxClass}>
+                <lightning-input
+                    type="search"
+                    label="Rechercher par nom, e-mail ou compte"
+                    placeholder="Saisissez au moins 2 caractères…"
+                    value={searchTerm}
+                    is-loading={isLoading}
+                    autocomplete="off"
+                    onchange={handleSearchChange}
+                    onfocus={handleFocus}
+                    onblur={handleBlur}
+                ></lightning-input>
+
+                <template lwc:if={showDropdown}>
+                    <div
+                        class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                        role="listbox"
+                        onmousedown={handleDropdownMouseDown}
+                    >
+                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                            <template for:each={accountResults} for:item="account">
+                                <li key={account.id} role="presentation" class="slds-listbox__item">
+                                    <div
+                                        data-id={account.id}
+                                        class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                        role="option"
+                                        onclick={handleSelectAccount}
+                                    >
+                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                            <lightning-icon
+                                                icon-name="utility:add"
+                                                size="small"
+                                                alternative-text="Ajouter"
+                                            ></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                                {account.label}
+                                            </span>
+                                            <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                {account.meta}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                            <template for:each={searchResults} for:item="contact">
+                                <li key={contact.id} role="presentation" class="slds-listbox__item">
+                                    <div
+                                        data-id={contact.id}
+                                        class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                        role="option"
+                                        onclick={handleSelect}
+                                    >
+                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                            <lightning-icon
+                                                icon-name="standard:contact"
+                                                size="small"
+                                                alternative-text="Contact"
+                                            ></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                                {contact.name}
+                                            </span>
+                                            <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                {contact.meta}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                            <template lwc:if={showNoResults}>
+                                <li role="presentation" class="slds-listbox__item">
+                                    <div class="slds-p-around_small slds-text-color_weak">Aucun contact trouvé</div>
+                                </li>
+                            </template>
+                            <template lwc:if={errorMessage}>
+                                <li role="presentation" class="slds-listbox__item">
+                                    <div class="slds-p-around_small slds-text-color_error">{errorMessage}</div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-grid slds-grid_vertical-align-start slds-m-top_small">
+        <lightning-input
+            lwc:ref="emailInput"
+            class="slds-col slds-grow"
+            type="email"
+            label="Ajouter une adresse e-mail"
+            placeholder="exemple@domaine.com"
+            value={emailInput}
+            autocomplete="off"
+            onchange={handleEmailChange}
+            onkeyup={handleEmailKeyUp}
+        ></lightning-input>
+        <lightning-button
+            class="slds-m-left_x-small add-email"
+            label="Ajouter"
+            icon-name="utility:add"
+            disabled={isAddEmailDisabled}
+            onclick={handleAddEmail}
+        ></lightning-button>
+    </div>
+
+    <div class="slds-form-element slds-m-top_medium">
+        <div class="slds-grid slds-grid_vertical-align-center">
+            <span class="slds-form-element__label">Destinataires sélectionnés ({selectedCount})</span>
+            <template lwc:if={hasSelection}>
+                <lightning-button-icon
+                    class="slds-col_bump-left clear-all"
+                    icon-name="utility:close"
+                    variant="bare"
+                    size="medium"
+                    alternative-text="Supprimer tous les destinataires"
+                    title="Supprimer tous les destinataires"
+                    onclick={handleClearAll}
+                ></lightning-button-icon>
+            </template>
+        </div>
+        <div class="recipient-bucket slds-box slds-box_x-small">
+            <template lwc:if={hasSelection}>
+                <lightning-pill-container
+                    items={selectedPills}
+                    onitemremove={handleRemove}
+                ></lightning-pill-container>
+            </template>
+            <template lwc:else>
+                <p class="slds-p-around_x-small slds-text-color_weak">Aucun destinataire sélectionné</p>
+            </template>
+        </div>
+    </div>
+</template>

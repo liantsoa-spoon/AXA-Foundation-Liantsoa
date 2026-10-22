@@ -1,0 +1,28 @@
+.catalog-builder-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.slds-accordion__section[draggable='true'],
+li[draggable='true'] {
+    cursor: grab;
+}
+
+.slds-accordion__section[draggable='true']:active,
+li[draggable='true']:active {
+    cursor: grabbing;
+}
+
+.eoi-badge {
+    --slds-c-badge-color-background: #fe9339;
+    --slds-c-badge-text-color: #080707;
+}
+
+.catalogue-drop-target-before {
+    border-top: 3px solid #1589ee;
+}
+
+.catalogue-drop-target-after {
+    border-bottom: 3px solid #1589ee;
+}
