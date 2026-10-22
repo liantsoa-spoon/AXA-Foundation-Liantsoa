@@ -1,0 +1,48 @@
+<!--
+  @description       : Renders a required consent checkbox whose label links to the consented document.
+  @author            : Liantsoa Andrianilana
+  @last modified on  : 20-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   20-10-2026   LAN      Initial version
+-->
+<template>
+  <!-- lightning-input only takes a text label: the SLDS checkbox blueprint lets the label hold the link. -->
+  <div class={fieldClasses}>
+    <div class="slds-form-element__control">
+      <div class="slds-checkbox">
+        <abbr class="slds-required" title="required">*</abbr>
+        <input
+          type="checkbox"
+          name="consent"
+          id="consent"
+          checked={isChecked}
+          aria-describedby="consent-error"
+          onchange={handleChange}
+        />
+        <label class="slds-checkbox__label" for="consent">
+          <span class="slds-checkbox_faux"></span>
+          <span class="slds-form-element__label">
+            {prefix}
+            <!-- The template compiler drops the space before the link, so the margin restores it. -->
+            <span class="slds-var-m-left_xx-small">
+              <template lwc:if={url}>
+                <a href={url} target="_blank" rel="noopener noreferrer"
+                  >{linkLabel}</a
+                >
+              </template>
+              <template lwc:else>{linkLabel}</template>
+            </span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <template lwc:if={isErrorShown}>
+      <div class="slds-form-element__help" id="consent-error">
+        {errorMessage}
+      </div>
+    </template>
+  </div>
+</template>

@@ -1,0 +1,429 @@
+<!--
+  @description       : Renders the candidate-facing application form, section by section.
+  @author            : Liantsoa Andrianilana
+  @last modified on  : 20-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   01-10-2026   LAN      Multi-file upload named after the question label
+  1.1   01-10-2026   LAN      Show selected files as pending until Save as Draft / Submit
+  1.2   05-10-2026   LAN      Standard file upload, without record: files are not attached to the Application Form
+  1.3   05-10-2026   LAN      Show the already-submitted message in place of the form
+  1.4   08-10-2026   LAN      Show every string from LABELS, in the language of the form
+  1.5   08-10-2026   LAN      Placeholder and validation messages from LABELS, in the language of the form
+  1.6   08-10-2026   LAN      Too long and step mismatch messages from LABELS
+  1.7   08-10-2026   LAN      Keep the platform bad input message: the date format hint follows the user locale
+  1.8   08-10-2026   LAN      Required message of the plain inputs from the question state (platform one for dates)
+  1.9   08-10-2026   LAN      Keep the platform required message on every field, in the language of the user
+  2.0   09-10-2026   LAN      Disable the locked fields through isInputDisabled
+  2.1   09-10-2026   LAN      Add the spinner shown while the form is saved
+  2.2   13-10-2026   LAN      Show the budget tables of the current section
+  2.3   16-10-2026   LAN      Remove the budget tables, to be reworked
+  2.4   19-10-2026   LAN      Show the budget block in its section, kept loaded and hidden in the other sections
+  2.5   20-10-2026   LAN      Show the terms and conditions and image rights consents at the end of the last section
+-->
+<template>
+    <div class="slds-card slds-p-around_medium">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text={labels.loading} size="medium"></lightning-spinner>
+        </template>
+        <template if:true={isSaving}>
+            <lightning-spinner alternative-text={labels.saving} size="medium"></lightning-spinner>
+        </template>
+
+        <template if:true={isSubmissionBlocked}>
+            <div class="slds-scoped-notification slds-scoped-notification_light slds-media" role="status">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:info" size="small" alternative-text={labels.information}></lightning-icon>
+                </div>
+                <div class="slds-media__body blocked-message">
+                    <p>{blockedMessage.beforeLink}<template if:true={blockedMessage.hasLink}><a href={blockedMessage.linkUrl}>{blockedMessage.linkText}</a></template>{blockedMessage.afterLink}</p>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isEditRestricted}>
+            <div class="slds-scoped-notification slds-scoped-notification_light slds-media read-only-notice" role="status">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:preview" size="x-small" alternative-text={labels.information}></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <p>{creatorName}{labels.editRestricted.responsibilityStatement}</p>
+                    <p class="slds-text-color_weak">{labels.editRestricted.readOnlyAccessAndContactRequest}</p>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isFormUnavailable}>
+            <div class="slds-notify slds-notify_alert slds-alert_info" role="status">
+                <span>{unavailableMessage}</span>
+            </div>
+        </template>
+
+        <template if:true={hasSections}>
+            <template if:true={displaySteps}>
+                <div class="slds-p-bottom_medium">
+                    <div class="slds-path">
+                        <div class="slds-grid slds-path__track">
+                            <div class="slds-grid slds-path__scroller-container">
+                                <div class="slds-path__scroller" role="application">
+                                    <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                        <template for:each={pathSteps} for:item="step">
+                                            <li key={step.value} class={step.itemClass} role="presentation">
+                                                <a
+                                                    aria-selected={step.isCurrent}
+                                                    class="slds-path__link"
+                                                    href="javascript:void(0);"
+                                                    role="option"
+                                                    title={step.label}
+                                                    data-section-id={step.value}
+                                                    onclick={handleStepClick}
+                                                >
+                                                    <span class="slds-path__stage"></span>
+                                                    <span class="slds-path__title">{step.label}</span>
+                                                </a>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="slds-grid slds-wrap slds-gutters slds-p-vertical_medium">
+                <template for:each={currentSection.questions} for:item="question">
+                    <div key={question.versionId} class={question.containerClass}>
+                        <template if:false={question.isTable}>
+                            <template if:true={question.isTextarea}>
+                                <lightning-textarea
+                                    label={question.label}
+                                    value={question.value}
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    max-length={question.maxLength}
+                                    message-when-too-long={labels.tooLong}
+                                    onchange={handleFieldChange}
+                                    disabled={effectiveReadOnly}
+                                    required={question.isMandatory}
+                                ></lightning-textarea>
+                            </template>
+                            <template if:true={question.isCheckbox}>
+                                <lightning-input
+                                    type="checkbox"
+                                    label={question.label}
+                                    checked={question.value}
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    data-checkbox="true"
+                                    onchange={handleFieldChange}
+                                    disabled={effectiveReadOnly}
+                                    required={question.isMandatory}
+                                ></lightning-input>
+                            </template>
+                            <template if:true={question.isPlainInput}>
+                                <lightning-input
+                                    type={question.inputType}
+                                    formatter={question.formatter}
+                                    step={question.step}
+                                    label={question.label}
+                                    value={question.value}
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    max-length={question.maxLength}
+                                    message-when-too-long={labels.tooLong}
+                                    onchange={handleFieldChange}
+                                    disabled={question.isInputDisabled}
+                                    required={question.isMandatory}
+                                    message-when-type-mismatch={labels.invalidValue}
+                                    message-when-step-mismatch={labels.invalidNumber}
+                                ></lightning-input>
+                            </template>
+                            <template if:true={question.isSelect}>
+                                <lightning-combobox
+                                    label={question.label}
+                                    placeholder={labels.selectPlaceholder}
+                                    value={question.value}
+                                    options={question.options}
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    onchange={handleFieldChange}
+                                    disabled={effectiveReadOnly}
+                                    required={question.isMandatory}
+                                ></lightning-combobox>
+                            </template>
+                            <template if:true={question.isMultiselect}>
+                                <lightning-dual-listbox
+                                    label={question.label}
+                                    source-label={labels.available}
+                                    selected-label={labels.selected}
+                                    value={question.value}
+                                    options={question.options}
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    onchange={handleFieldChange}
+                                    disabled={effectiveReadOnly}
+                                    required={question.isMandatory}
+                                ></lightning-dual-listbox>
+                            </template>
+                            <template if:true={question.isRadio}>
+                                <lightning-radio-group
+                                    label={question.label}
+                                    value={question.value}
+                                    options={question.options}
+                                    type="radio"
+                                    field-level-help={question.helpText}
+                                    data-version-id={question.versionId}
+                                    onchange={handleFieldChange}
+                                    disabled={effectiveReadOnly}
+                                    required={question.isMandatory}
+                                ></lightning-radio-group>
+                            </template>
+                            <template if:true={question.isFile}>
+                                <div class="file-question-row">
+                                    <div class="file-question-label">
+                                        <label class="slds-form-element__label slds-m-bottom_none">
+                                            <abbr if:true={question.isMandatory} class="slds-required" title={labels.required}>*</abbr>{question.label}
+                                        </label>
+                                        <lightning-helptext if:true={question.helpText} content={question.helpText} class="slds-m-left_xx-small"></lightning-helptext>
+                                    </div>
+                                    <div class="file-question-body">
+                                        <!-- Standard upload, no record-id: the files are owned by the user and attached to nothing. -->
+                                        <lightning-file-upload
+                                            label=""
+                                            variant="label-hidden"
+                                            name={question.versionId}
+                                            data-version-id={question.versionId}
+                                            multiple
+                                            disabled={question.isFileDisabled}
+                                            onuploadfinished={handleUploadFinished}
+                                        ></lightning-file-upload>
+
+                                        <!-- File Preview Card -->
+                                        <template if:true={question.uploadedFiles.length}>
+                                            <template for:each={question.uploadedFiles} for:item="file">
+                                                <div key={file.documentId} class="slds-m-top_small slds-p-around_small slds-box slds-theme_shade slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                                                    <div class="slds-grid slds-grid_vertical-align-center slds-truncate">
+                                                        <!-- Document Attachment Icon -->
+                                                        <lightning-icon
+                                                            icon-name="doctype:attachment"
+                                                            size="medium"
+                                                            class="slds-m-right_small"
+                                                        ></lightning-icon>
+                                                        
+                                                        <!-- Title & Links -->
+                                                        <div class="slds-truncate">
+                                                            <span class="slds-text-heading_small slds-truncate slds-block" title={file.name}>
+                                                                {file.name}
+                                                            </span>
+                                                            <div class="slds-m-top_xx-small">
+                                                                <a href={file.previewUrl} target="_blank" class="slds-m-right_small slds-text-link">
+                                                                    {labels.preview}
+                                                                </a>
+                                                                <a href={file.downloadUrl} target="_blank" class="slds-text-link">
+                                                                    {labels.download}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Delete Button -->
+                                                    <template if:false={effectiveReadOnly}>
+                                                        <lightning-button-icon
+                                                            icon-name="utility:delete"
+                                                            variant="border-filled"
+                                                            alternative-text={labels.deleteFile}
+                                                            title={labels.deleteFile}
+                                                            data-version-id={question.versionId}
+                                                            data-document-id={file.documentId}
+                                                            onclick={handleRemoveFile}
+                                                        ></lightning-button-icon>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </template>
+
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:true={question.isTable}>
+                            <label class="slds-form-element__label">{question.label}</label>
+                            <lightning-helptext if:true={question.helpText} content={question.helpText}></lightning-helptext>
+
+                            <template for:each={question.rows} for:item="row">
+                                <div key={row.key} class="slds-grid slds-gutters slds-p-bottom_small slds-grid_vertical-align-end">
+                                    <template for:each={row.cells} for:item="cell">
+                                        <div key={cell.developerName} class="slds-col">
+                                            <template if:true={cell.isCheckbox}>
+                                                <lightning-input
+                                                    type="checkbox"
+                                                    label={cell.developerName}
+                                                    checked={cell.value}
+                                                    data-version-id={question.versionId}
+                                                    data-row-key={row.key}
+                                                    data-column={cell.developerName}
+                                                    data-checkbox="true"
+                                                    onchange={handleCellChange}
+                                                    disabled={effectiveReadOnly}
+                                                ></lightning-input>
+                                            </template>
+                                            <template if:false={cell.isCheckbox}>
+                                                <lightning-input
+                                                    type={cell.inputType}
+                                                    label={cell.developerName}
+                                                    value={cell.value}
+                                                    data-version-id={question.versionId}
+                                                    data-row-key={row.key}
+                                                    data-column={cell.developerName}
+                                                    onchange={handleCellChange}
+                                                    disabled={effectiveReadOnly}
+                                                ></lightning-input>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template if:false={effectiveReadOnly}>
+                                        <div class="slds-col slds-shrink-none">
+                                            <lightning-button-icon
+                                                icon-name="utility:delete"
+                                                alternative-text={labels.deleteRow}
+                                                title={labels.deleteRow}
+                                                data-version-id={question.versionId}
+                                                data-row-key={row.key}
+                                                onclick={handleRemoveRow}
+                                            ></lightning-button-icon>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template if:false={effectiveReadOnly}>
+                                <lightning-button
+                                    label={labels.addRow}
+                                    icon-name="utility:add"
+                                    data-version-id={question.versionId}
+                                    onclick={handleAddRow}
+                                ></lightning-button>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Loaded once and hidden outside its section: the rows typed in the tables are kept. -->
+            <template if:true={hasBudgetBlock}>
+                <div class={budgetBlockClass}>
+                    <c-application-form-budget
+                        funding-opportunity-id={formFundingOpportunityId}
+                        application-form-id={activeApplicationFormId}
+                        read-only={effectiveReadOnly}
+                    ></c-application-form-budget>
+                </div>
+            </template>
+
+            <!-- Ticked again at each submission, EOI and full application: never saved with a draft. -->
+            <template if:true={showConsents}>
+                <!-- On one line, centered on the form width; they wrap under each other on a narrow screen. -->
+                <div class="slds-grid slds-wrap slds-grid_align-center slds-gutters slds-p-top_medium">
+                    <div class="slds-col slds-grow-none">
+                        <c-consent-checkbox
+                            prefix={consents.prefix}
+                            link-label={consents.termsAndConditions.linkLabel}
+                            url={consents.termsAndConditions.url}
+                            error-message={consents.errorMessage}
+                        ></c-consent-checkbox>
+                    </div>
+                    <div class="slds-col slds-grow-none">
+                        <c-consent-checkbox
+                            prefix={consents.prefix}
+                            link-label={consents.imageRights.linkLabel}
+                            url={consents.imageRights.url}
+                            error-message={consents.errorMessage}
+                        ></c-consent-checkbox>
+                    </div>
+                </div>
+            </template>
+
+            <div class="slds-grid slds-grid_align-spread slds-p-top_medium">
+                <div>
+                    <template if:false={isFirstSection}>
+                        <lightning-button
+                            label={labels.previous}
+                            onclick={handlePrevious}
+                        ></lightning-button>
+                    </template>
+                </div>
+                <div>
+                    <template if:true={showSaveAsDraft}>
+                        <template if:false={effectiveReadOnly}>
+                            <lightning-button
+                                label={labels.saveAsDraft}
+                                onclick={handleSaveAsDraft}
+                                disabled={isSaving}
+                                class="slds-m-right_x-small"
+                            ></lightning-button>
+                        </template>
+                    </template>
+                    <template if:true={showNextButton}>
+                        <lightning-button
+                            label={nextButtonLabel}
+                            variant="brand"
+                            onclick={handleNext}
+                            disabled={isSaving}
+                        ></lightning-button>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={hasSections}>
+            <template if:false={isLoading}>
+                <template if:false={isFormUnavailable}>
+                    <template if:false={isSubmissionBlocked}>
+                        <p class="slds-text-body_regular slds-text-color_weak">
+                            {labels.noQuestions}
+                        </p>
+                    </template>
+                </template>
+            </template>
+        </template>
+
+        <template if:true={isConfirmVisible}>
+            <section
+                role="alertdialog"
+                tabindex="-1"
+                aria-modal="true"
+                aria-labelledby="confirmSubmissionHeading"
+                aria-describedby="confirmSubmissionBody"
+                class="slds-modal slds-fade-in-open"
+            >
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 id="confirmSubmissionHeading" class="slds-modal__title slds-hyphenate">
+                            {confirmTitle}
+                        </h2>
+                    </header>
+                    <div id="confirmSubmissionBody" class="slds-modal__content slds-p-around_medium">
+                        <p>{confirmMessage}</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button
+                            label={labels.cancel}
+                            onclick={handleConfirmCancel}
+                            class="slds-m-right_x-small"
+                        ></lightning-button>
+                        <lightning-button
+                            label={labels.confirm}
+                            variant="brand"
+                            onclick={handleConfirmSubmit}
+                            disabled={isSaving}
+                        ></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

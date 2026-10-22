@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Application Form</masterLabel>
+    <description>Funding Opportunity form player. It resumes the FO draft or starts an EOI form.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage,lightning__AppPage,lightning__HomePage,lightningCommunity__Default">
+            <property
+                name="fundingOpportunityId"
+                type="String"
+                label="Funding Opportunity Id"
+                description="Used on App, Home, or Experience Cloud pages when the page URL has no id parameter (?id=...). Ignored on an Application Form or Funding Opportunity record page, where recordId is detected automatically."
+            />
+            <property
+                name="eoi"
+                type="Boolean"
+                label="EOI"
+                default="false"
+                description="Checked on its own: only the Expression Of Interest is shown and the journey stops once it is submitted."
+            />
+            <property
+                name="eoiAndFullApplication"
+                type="Boolean"
+                label="EOI + Full Application"
+                default="false"
+                description="Checked: the EOI is shown first, then the full application opens once the EOI is submitted. This wins over the EOI checkbox. Leave both unchecked to open the full application straight away."
+            />
+            <property
+                name="readOnly"
+                type="Boolean"
+                label="Read Only"
+                default="false"
+                description="View-only mode: every field is disabled and Next/Previous only navigate — nothing is saved."
+            />
+            <property
+                name="hideSteps"
+                type="Boolean"
+                label="Hide Section Path"
+                default="false"
+                description="Hides the section path/step indicator at the top of the player."
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

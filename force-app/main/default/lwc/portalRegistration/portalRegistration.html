@@ -1,0 +1,449 @@
+<!--
+  @description       : Renders the two steps of the portal self-registration form and its outcomes.
+  @author            : Kevin RAMAROZATOVO
+  @last modified on  : 20-10-2026
+  @last modified by  : Liantsoa Andrianilana
+
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   24-09-2026   KRA      Initial version
+  1.1   20-10-2026   LAN      Replace the terms checkbox with the data acceptance policy checkbox and link
+  1.2   20-10-2026   LAN      Show the data acceptance policy through the consentCheckbox component
+-->
+<template>
+  <lightning-card title={labels.title}>
+    <template if:true={isBusy}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="medium"
+      ></lightning-spinner>
+    </template>
+    <div class="slds-var-p-around_medium">
+      <template lwc:if={isOrganizationStep}>
+        <p class="slds-var-m-bottom_medium">{labels.feedback.introduction}</p>
+        <div class={legalNameFieldClasses}>
+          <label class="slds-form-element__label" for="legalName">
+            {labels.fields.legalName}
+          </label>
+          <div class="slds-form-element__icon">
+            <lightning-helptext
+              content={labels.fieldHelp.legalName}
+            ></lightning-helptext>
+          </div>
+          <div
+            class="slds-form-element__control slds-grid slds-grid_vertical-align-start"
+          >
+            <div
+              class="slds-combobox_container slds-grow slds-var-m-right_x-small"
+            >
+              <div
+                class={comboboxClasses}
+                role="combobox"
+                aria-expanded={hasSuggestions}
+                aria-haspopup="listbox"
+              >
+                <div class="slds-combobox__form-element" role="none">
+                  <input
+                    id="legalName"
+                    type="text"
+                    class="slds-input slds-combobox__input legal-name-input"
+                    autocomplete="off"
+                    aria-autocomplete="list"
+                    required
+                    value={legalName}
+                    oninput={handleLegalNameChange}
+                    onblur={handleLegalNameBlur}
+                  />
+                </div>
+                <div
+                  class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                  role="listbox"
+                >
+                  <ul
+                    class="slds-listbox slds-listbox_vertical"
+                    role="presentation"
+                  >
+                    <template for:each={suggestions} for:item="suggestion">
+                      <li
+                        key={suggestion}
+                        role="presentation"
+                        class="slds-listbox__item"
+                      >
+                        <div
+                          class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                          role="option"
+                          data-value={suggestion}
+                          onmousedown={handleSuggestionSelect}
+                        >
+                          <span class="slds-media__body">
+                            <span class="slds-truncate" title={suggestion}>
+                              {suggestion}
+                            </span>
+                          </span>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <template lwc:if={showBlockedMessage}>
+              <lightning-icon
+                icon-name="utility:success"
+                variant="success"
+                size="x-small"
+                class="slds-var-m-right_x-small"
+              ></lightning-icon>
+            </template>
+            <lightning-button
+              label={labels.search}
+              disabled={isBusy}
+              onclick={handleSearch}
+            ></lightning-button>
+          </div>
+          <template lwc:if={legalNameError}>
+            <div class="slds-form-element__help" role="alert">
+              {legalNameError}
+            </div>
+          </template>
+        </div>
+
+        <template lwc:if={showBlockedMessage}>
+          <template lwc:if={operationalContactName}>
+            <p class="slds-var-m-top_medium">
+              {labels.feedback.blockedContactName} {operationalContactName}
+            </p>
+          </template>
+          <p class="slds-var-m-top_small">{labels.feedback.blockedMessage}</p>
+        </template>
+
+        <template lwc:if={showCreateOrganizationSection}>
+          <p class="slds-var-m-top_medium">
+            {labels.feedback.organizationMissing}
+          </p>
+
+          <div class="slds-var-m-top_medium slds-text-align_center">
+            <lightning-button
+              variant="brand"
+              label={labels.createOrganization}
+              disabled={isBusy}
+              onclick={handleCreateOrganization}
+            ></lightning-button>
+          </div>
+
+          <div class="slds-var-m-top_large">
+            <p>{labels.feedback.footerNoteParagraph1}</p>
+            <p class="slds-var-m-top_small">
+              {labels.feedback.footerNoteParagraph2}
+            </p>
+            <p class="slds-var-m-top_small">
+              {labels.feedback.footerNoteParagraph3}
+            </p>
+          </div>
+        </template>
+      </template>
+
+      <template lwc:elseif={isCandidateStep}>
+        <div class="slds-box slds-box_x-small slds-var-m-bottom_medium">
+          <p>{labels.feedback.organizationUnknown}</p>
+          <lightning-button
+            variant="base"
+            label={labels.changeOrganization}
+            onclick={handleChangeOrganization}
+          ></lightning-button>
+        </div>
+
+        <div class="slds-section__title slds-var-m-bottom_x-small">
+          {labels.sections.identity}
+        </div>
+        <c-contact-details-container
+          value={candidate}
+          salutation-options={salutationOptions}
+          labels={labels.fields}
+          onfieldchange={handleCandidateChange}
+        ></c-contact-details-container>
+
+        <div
+          class="slds-section__title slds-var-m-top_medium slds-var-m-bottom_x-small"
+        >
+          {labels.sections.organizationDetails}
+        </div>
+        <lightning-layout multiple-rows>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="name"
+              label={labels.fields.name}
+              value={organization.name}
+              required
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-combobox
+              name="legalForm"
+              label={labels.fields.legalForm}
+              value={organization.legalForm}
+              options={legalFormOptions}
+              required
+              onchange={handleOrganizationChange}
+            ></lightning-combobox>
+          </lightning-layout-item>
+          <template lwc:if={isOtherLegalForm}>
+            <lightning-layout-item size="6" padding="horizontal-small">
+              <lightning-input
+                name="otherLegalForm"
+                label={labels.fields.otherLegalForm}
+                value={organization.otherLegalForm}
+                max-length="255"
+                required
+                onchange={handleOrganizationChange}
+              ></lightning-input>
+            </lightning-layout-item>
+          </template>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <div class="slds-size_1-of-2 slds-p-right_small">
+              <div class={countryFieldClasses}>
+                <label class="slds-form-element__label" for="country">
+                  <abbr class="slds-required" title="required">*</abbr>
+                  {labels.fields.country}
+                </label>
+                <div class="slds-form-element__control">
+                  <div class="slds-combobox_container">
+                    <div
+                      class={countryComboboxClasses}
+                      role="combobox"
+                      aria-expanded={hasCountrySuggestions}
+                      aria-haspopup="listbox"
+                    >
+                      <div class="slds-combobox__form-element" role="none">
+                        <input
+                          id="country"
+                          type="text"
+                          class="slds-input slds-combobox__input"
+                          autocomplete="off"
+                          aria-autocomplete="list"
+                          required
+                          value={countrySearchText}
+                          oninput={handleCountryInput}
+                          onfocus={handleCountryFocus}
+                          onblur={handleCountryBlur}
+                        />
+                      </div>
+                      <div
+                        class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                        role="listbox"
+                      >
+                        <ul
+                          class="slds-listbox slds-listbox_vertical"
+                          role="presentation"
+                        >
+                          <template
+                            for:each={countrySuggestions}
+                            for:item="country"
+                          >
+                            <li
+                              key={country.value}
+                              role="presentation"
+                              class="slds-listbox__item"
+                            >
+                              <div
+                                class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                role="option"
+                                data-value={country.value}
+                                data-label={country.label}
+                                onmousedown={handleCountrySelect}
+                              >
+                                <span class="slds-media__body">
+                                  <span
+                                    class="slds-truncate"
+                                    title={country.label}
+                                  >
+                                    {country.label}
+                                  </span>
+                                </span>
+                              </div>
+                            </li>
+                          </template>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <template lwc:if={countryError}>
+                  <div class="slds-form-element__help" role="alert">
+                    {countryError}
+                  </div>
+                </template>
+              </div>
+            </div>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="identificationNumber"
+              label={labels.fields.identificationNumber}
+              field-level-help={labels.fieldHelp.identificationNumber}
+              value={organization.identificationNumber}
+              max-length="14"
+              required={isIdentificationNumberRequired}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="taxIdentificationNumber"
+              label={labels.fields.taxIdentificationNumber}
+              field-level-help={labels.fieldHelp.taxIdentificationNumber}
+              value={organization.taxIdentificationNumber}
+              max-length="40"
+              required={isTaxIdentificationNumberRequired}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="foundingDate"
+              type="date"
+              label={labels.fields.foundingDate}
+              value={organization.foundingDate}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="postalCode"
+              label={labels.fields.postalCode}
+              value={organization.postalCode}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <lightning-input
+              name="street"
+              label={labels.fields.street}
+              value={organization.street}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-input
+              name="website"
+              type="url"
+              label={labels.fields.website}
+              value={organization.website}
+              onchange={handleOrganizationChange}
+            ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-combobox
+              name="authorizedToIssueTaxReceipts"
+              label={labels.fields.authorizedToIssueTaxReceipts}
+              value={organization.authorizedToIssueTaxReceipts}
+              options={taxReceiptOptions}
+              onchange={handleOrganizationChange}
+            ></lightning-combobox>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <lightning-textarea
+              name="foundingBackground"
+              label={labels.fields.foundingBackground}
+              value={organization.foundingBackground}
+              max-length="3000"
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <lightning-textarea
+              name="description"
+              label={labels.fields.description}
+              value={organization.description}
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <lightning-textarea
+              name="objectives"
+              label={labels.fields.objectives}
+              value={organization.objectives}
+              max-length="3000"
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" padding="horizontal-small">
+            <lightning-textarea
+              name="mainActivities"
+              label={labels.fields.mainActivities}
+              value={organization.mainActivities}
+              max-length="3000"
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-textarea
+              name="keyDates"
+              label={labels.fields.keyDates}
+              value={organization.keyDates}
+              max-length="3000"
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" padding="horizontal-small">
+            <lightning-textarea
+              name="keyFigures"
+              label={labels.fields.keyFigures}
+              value={organization.keyFigures}
+              max-length="3000"
+              onchange={handleOrganizationChange}
+            ></lightning-textarea>
+          </lightning-layout-item>
+        </lightning-layout>
+
+        <div
+          class="slds-section__title slds-var-m-top_medium slds-var-m-bottom_x-small"
+        >
+          {labels.sections.legalRepresentative}
+          <lightning-helptext
+            class="slds-var-m-left_x-small"
+            content={labels.feedback.legalRepresentativeHelp}
+          ></lightning-helptext>
+        </div>
+        <c-contact-details-container
+          value={organization.legalRepresentative}
+          salutation-options={salutationOptions}
+          labels={labels.fields}
+          is-every-field-required
+          onfieldchange={handleLegalRepresentativeChange}
+        ></c-contact-details-container>
+
+        <div class="slds-var-m-top_medium">
+          <c-consent-checkbox
+            prefix={labels.dataAcceptance}
+            link-label={labels.dataAcceptanceLink}
+            url={dataAcceptanceUrl}
+            error-message={labels.errors.DATA_ACCEPTANCE_NOT_ACCEPTED}
+            onconsentchange={handleDataAcceptanceChange}
+          ></c-consent-checkbox>
+        </div>
+
+        <div class="slds-var-m-top_medium slds-text-align_right">
+          <lightning-button
+            variant="brand"
+            label={labels.submit}
+            disabled={isBusy}
+            onclick={handleSubmit}
+          ></lightning-button>
+        </div>
+      </template>
+
+      <template lwc:elseif={isConfirmed}>
+        <div class="slds-text-heading_small slds-var-m-bottom_x-small">
+          {labels.feedback.confirmationTitle}
+        </div>
+        <p>{labels.feedback.confirmationMessage}</p>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <p class="slds-text-color_error slds-var-m-top_small">{errorMessage}</p>
+      </template>
+    </div>
+  </lightning-card>
+</template>
