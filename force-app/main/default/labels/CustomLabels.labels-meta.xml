@@ -49,12 +49,44 @@ You can access your submission&apos;s information {ApplicationFormLink}. If you 
         <value>Budget requested from the AXA Foundation to support this project (in euros)</value>
     </labels>
     <labels>
+        <fullName>ApplicationFormConsentImageRightsLink</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Application form - Image rights link label</shortDescription>
+        <value>Image Rights</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormConsentPrefix</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Application form - Consent checkbox label before the document link</shortDescription>
+        <value>I accept the</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormConsentTermsAndConditionsLink</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Application form - Terms and conditions link label</shortDescription>
+        <value>Terms and Conditions</value>
+    </labels>
+    <labels>
         <fullName>ApplicationFormEditRestrictedMessage</fullName>
         <categories>ApplicationForm</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Message shown to a Contact who cannot fill the form</shortDescription>
         <value>Only the project applicant lead can fill in this application form. You can view the project in read-only mode.</value>
+    </labels>
+    <labels>
+        <fullName>ApplicationFormErrorConsentsNotAccepted</fullName>
+        <categories>ApplicationForm</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Application form - Error: consents not accepted</shortDescription>
+        <value>You must accept the Terms and Conditions and the Image Rights.</value>
     </labels>
     <labels>
         <fullName>ApplicationFormErrorDuplicateContact</fullName>
@@ -321,6 +353,27 @@ You can access your submission&apos;s information {ApplicationFormLink}. If you 
         <protected>false</protected>
         <shortDescription>Portal Registration - Create organization button</shortDescription>
         <value>Create the account of your organization</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_DataAcceptance</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Data acceptance checkbox label</shortDescription>
+        <value>I accept the</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_DataAcceptanceLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Data acceptance link label</shortDescription>
+        <value>Data Acceptance Policy</value>
+    </labels>
+    <labels>
+        <fullName>PortalRegistration_ErrorDataAcceptanceNotAccepted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal Registration - Error: data acceptance not accepted</shortDescription>
+        <value>You must accept the Data Acceptance Policy.</value>
     </labels>
     <labels>
         <fullName>PortalRegistration_ErrorDuplicateContact</fullName>
